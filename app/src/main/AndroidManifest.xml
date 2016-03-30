@@ -55,6 +55,14 @@
                 android:value=".activity.PlannerMainActivity"/>
         </activity>
 
+        <activity
+            android:name=".activity.PlannerSearchEventOrNoteActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.PlannerMainActivity"/>
+        </activity>
+
         <!-- Все приемщики намерений которые используются в приложении-->
         <receiver
             android:name=".receiver.DeviceRebootReceiver"
@@ -70,6 +78,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+
+        <!-- Все сервисы которые используются в приложении -->
+        <service android:name=".service.UndoAlarmEventsService"/>
 
     </application>
 

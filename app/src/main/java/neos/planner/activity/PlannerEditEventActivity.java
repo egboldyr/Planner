@@ -1,7 +1,10 @@
 package neos.planner.activity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +31,7 @@ import java.util.Scanner;
 import neos.planner.R;
 import neos.planner.entity.DbEvent;
 import neos.planner.entity.DbNote;
+import neos.planner.receiver.EventRemindReceiver;
 import neos.planner.sqlite.ORMLiteOpenHelper;
 
 /**
@@ -69,6 +73,7 @@ public class PlannerEditEventActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.barNoteDetails);
         toolbar.setTitle(R.string.edit_event_header);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         try {
             helper = OpenHelperManager.getHelper(this, ORMLiteOpenHelper.class);
@@ -148,6 +153,7 @@ public class PlannerEditEventActivity extends AppCompatActivity {
                     event.setTime(mEventTime.getText().toString());
                     event.setRemind(parseRemindOption(mRemindMeParam.getSelectedItem().toString()));
                     eventDAO.update(event);
+                    addEventToAlarmManager(event, event.getId());
                     setResult(RESULT_OK, new Intent());
                     finish();
                 } catch (SQLException e) {
@@ -183,6 +189,76 @@ public class PlannerEditEventActivity extends AppCompatActivity {
         hours = scanner.nextInt();
         minutes = scanner.nextInt();
     }
+
+    /*Метод помещающий созданное пользовательское событие в AlarmManager*/
+    private void addEventToAlarmManager(DbEvent event, Long eventId) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        Calendar calendar = Calendar.getInstance();
+        try {
+            Date currDate = sdf.parse(event.getDate());
+            calendar.setTime(currDate);
+
+            Integer day = calendar.get(Calendar.DAY_OF_MONTH);
+            Integer month = calendar.get(Calendar.MONTH);
+            Integer year = calendar.get(Calendar.YEAR);
+
+            Scanner scanner = new Scanner(event.getTime());
+            scanner.useDelimiter("\\:");
+
+            Integer hours = scanner.nextInt();
+            Integer minutes = scanner.nextInt();
+
+            calendar.set(year, month, day, hours, minutes);
+
+            Intent intent = new Intent(this, EventRemindReceiver.class);
+            intent.putExtra("BODY", mEventBody.getText().toString());
+
+            String id = Long.toString(eventId);
+
+            PendingIntent pendingIntent =
+                    PendingIntent.getBroadcast(this, Integer.parseInt(id),
+                            intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            switch (event.getRemind()) {
+                case "00:15" : {
+                    Long remind = calendar.getTimeInMillis();
+                    remind -= 1000 * 60 * 15;
+                    manager.set(AlarmManager.RTC_WAKEUP, remind, pendingIntent);
+                    break;
+                }
+                case "00:30" : {
+                    Long remind = calendar.getTimeInMillis();
+                    remind -= 1000 * 60 * 30;
+                    manager.set(AlarmManager.RTC_WAKEUP, remind, pendingIntent);
+                    break;
+                }
+                case "01:00" : {
+                    Long remind = calendar.getTimeInMillis();
+                    remind -= 1000 * 60 * 60;
+                    manager.set(AlarmManager.RTC_WAKEUP, remind, pendingIntent);
+                    break;
+                }
+                case "03:00" : {
+                    Long remind = calendar.getTimeInMillis();
+                    remind -= 1000 * 60 * 180;
+                    manager.set(AlarmManager.RTC_WAKEUP, remind, pendingIntent);
+                    break;
+                }
+                case "06:00" : {
+                    Long remind = calendar.getTimeInMillis();
+                    remind -= 1000 * 60 * 360;
+                    manager.set(AlarmManager.RTC_WAKEUP, remind, pendingIntent);
+                    break;
+                }
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /*Временное решение для удобства сохранения времени до события в нужном формате*/
     private String parseRemindOption(String remind) {

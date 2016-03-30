@@ -28,9 +28,9 @@ public class EventRemindReceiver extends BroadcastReceiver{
         builder.setSmallIcon(R.mipmap.ic_launcher)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(context.getString(R.string.app_name))
-                .setContentText(extras.getString("BODY"));
+                .setContentText(extras.getString("BODY"))
+                .setDefaults(Notification.DEFAULT_ALL);
         Notification notification = builder.build();
-        notification.defaults = Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE;
-        manager.notify(1, notification); //Заменить единицу на ID события
+        manager.notify(1, notification);
     }
 }

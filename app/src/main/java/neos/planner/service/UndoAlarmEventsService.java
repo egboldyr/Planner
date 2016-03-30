@@ -1,5 +1,9 @@
 package neos.planner.service;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+
 /**
  * Created by IEvgen Boldyr on 30.03.16.
  * Project: Planner
@@ -8,5 +12,11 @@ package neos.planner.service;
  * в случае если устройство было перезагружено
  */
 
-public class UndoAlarmEventsService {
+public class UndoAlarmEventsService extends Service {
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        //Реализоать логику востановления после перезагрузки
+        return null;
+    }
 }

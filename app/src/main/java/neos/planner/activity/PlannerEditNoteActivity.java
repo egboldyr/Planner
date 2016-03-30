@@ -86,6 +86,7 @@ public class PlannerEditNoteActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.barNoteDetails);
         toolbar.setTitle(R.string.edit_note_header);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabEditNote);
         fab.setOnClickListener(new View.OnClickListener() {

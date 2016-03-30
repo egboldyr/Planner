@@ -63,6 +63,7 @@ public class PlannerAddEventActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.barNoteDetails);
         toolbar.setTitle(R.string.add_event_header);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         calendar = Calendar.getInstance();
         try {

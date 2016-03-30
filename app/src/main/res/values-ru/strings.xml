@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Органайзер alpha0.0.1</string>
+    <string name="app_name">Planner alpha0.0.1</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -29,6 +29,7 @@
 
     <!-- Тесктовые элементы основного меню-->
     <string name="action_settings">Настройки</string>
+    <string name="action_find">Поиск</string>
 
     <!-- Тесктовые элементы компонента событие -->
     <string name="event_status_active">Активно</string>

@@ -77,7 +77,6 @@ public class PlannerMainActivity extends AppCompatActivity
         view.setLayoutManager(llm);
 
         createOnTouchListeners();
-        //getNotesList();
         getEventsList();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabMain);
@@ -151,8 +150,15 @@ public class PlannerMainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_find : {
+                callSearchActivity();
+                break;
+            }
+            case R.id.action_settings : {
+                //В будущем добавить настройки сюда
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -222,6 +228,13 @@ public class PlannerMainActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    /*Метод подготавливающий и вызывающий SearchEventOrNoteActivity*/
+    private void callSearchActivity() {
+        Intent intent =
+                new Intent(PlannerMainActivity.this, PlannerSearchEventOrNoteActivity.class);
+        startActivity(intent);
     }
 
     /*Метод для получения всех пользовательских заметок находящихся в БД

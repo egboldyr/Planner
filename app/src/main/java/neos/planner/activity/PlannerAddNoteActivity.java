@@ -57,6 +57,7 @@ public class PlannerAddNoteActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.barNoteDetails);
         toolbar.setTitle(R.string.add_note_header);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         group = (Spinner) findViewById(R.id.mSingleNoteGroup);
         String[] groups = {
