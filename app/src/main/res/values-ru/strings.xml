@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Органайзер alpha0.0.1</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Тесктовые элементы навигационного меню -->
+    <string name="nav_drawer_notes">Заметки</string>
+    <string name="nav_drawer_events">События</string>
+    <string name="nav_drawer_events_all">Все события</string>
+    <string name="nav_drawer_events_today">Сегодня</string>
+    <string name="nav_drawer_events_important">Важно</string>
+    <string name="nav_drawer_contacts">Контакты</string>
+
+    <!-- Текстовые элементы PlannerEditNoteActivity-->
+    <string name="edit_note_header">Редактирование</string>
+    <string name="edit_note_hint_title">Название</string>
+    <string name="edit_note_hint_text">Заметка</string>
+
+    <!-- Текстовые элементы PlannerAddNoteActivity-->
+    <string name="add_note_header">Новая заметка</string>
+
+    <!-- Текстовые элементы PlannerAddEventActivity-->
+    <string name="add_event_header">Новое событие</string>
+    <string name="edit_event_header">Редактирование</string>
+    <string name="add_event_date_hint">Выбрать дату</string>
+    <string name="add_event_time_hint">Выбрать время</string>
+    <string name="add_event_body_hint">Описание события</string>
+
+    <!-- Тесктовые элементы основного меню-->
+    <string name="action_settings">Настройки</string>
+
+    <!-- Тесктовые элементы компонента событие -->
+    <string name="event_status_active">Активно</string>
+    <string name="event_status_done">Выполнено</string>
+
+    <!-- Диалоги -->
+    <!-- Тесктовые элементы диалогового окна выбора (Создание заматки, события, контакта-->
+    <string name="fabMain_new_note_dialog">Заметка</string>
+    <string name="fabMain_new_event_dialog">Событие</string>
+    <string name="fabMain_new_contact_dialog">Контакт</string>
+
+    <!-- Тесктовые элементы диалогового окошка ShareNoteButton -->
+    <string name="note_share_button_send_sms">Отправить по SMS</string>
+    <string name="note_share_button_send_email">Отправить по ...</string>
+
+    <!-- Тесктовые элементы дилогового окна (Сохранение изменений)-->
+    <string name="save_changes_dialog_message">Сохранить изменения?</string>
+    <string name="save_changes_dialog_ok">OK</string>
+    <string name="save_changes_dialog_cancel">Отмена</string>
+    
+    <!-- Группы элементов для выпадающих списков -->
+    <!-- Группы заметок-->
+    <string name="note_group_general">Общая</string>
+    <string name="note_group_favorites">Избранное</string>
+
+    <!-- Параметры Напомнить мне-->
+    <string name="event_remind_15_min">Напомнить за 15мин.</string>
+    <string name="event_remind_30_min">Напомнить за 30мин.</string>
+    <string name="event_remind_1_hour">Напомнить за 1ч.</string>
+    <string name="event_remind_3_hour">Напомнить за 3ч.</string>
+    <string name="event_remind_6_hour">Напомнить за 6ч.</string>
+
+</resources>

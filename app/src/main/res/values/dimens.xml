@@ -1,0 +1,42 @@
+<resources>
+    
+    <!--Размерность заголовка Navigation Drawer -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="nav_header_text_size">20dp</dimen>
+    
+    <!-- Отступы во всех активити по умолчанию -->
+    <dimen name="activity_horizontal_margin">8dp</dimen>
+    <dimen name="activity_vertical_margin">8dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    
+    <!-- Отсутпы для корректного отображения иконок -->
+    <dimen name="icon_margin">8dp</dimen>
+    <dimen name="icon_margin_right">4dp</dimen>
+
+    <!-- Отступы для корректного отображения карточек-->
+    <dimen name="cardview_margin">3dp</dimen>
+
+    <!-- Верстка карточки содержащей пользовательскую заметку-->
+    <dimen name="note_header_margin">5dp</dimen>
+    <dimen name="note_header_text_size">18sp</dimen>
+    <dimen name="note_body_margin">8dp</dimen>
+    <dimen name="note_body_text_size">16sp</dimen>
+    <dimen name="note_group_margin">7dp</dimen>
+    <dimen name="note_group_text_size">10sp</dimen>
+    <dimen name="note_date_margin">12dp</dimen>
+    <dimen name="note_date_text_size">16sp</dimen>
+    <dimen name="note_share_button_padding">25dp</dimen>
+
+    <!-- Верстка карточки содержащей пользовательское событие-->
+    <dimen name="event_header_margin">5dp</dimen>
+    <dimen name="event_header_text">18sp</dimen>
+    <dimen name="event_status_margin">8dp</dimen>
+    <dimen name="event_status_text_size">10sp</dimen>
+    <dimen name="event_body_margin">8dp</dimen>
+    <dimen name="event_body_text_size">16sp</dimen>
+
+    <!-- Верстка для корректного отображения подсказок -->
+    <dimen name="event_hint_margin">3dp</dimen>
+    <dimen name="event_hint_text_size">18sp</dimen>
+</resources>

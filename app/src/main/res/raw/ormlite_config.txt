@@ -1,0 +1,65 @@
+#
+# generated on 2016/03/25 05:50:09
+#
+# --table-start--
+dataClass=neos.planner.entity.DbNote
+tableName=PLANNER_NOTES
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=title
+columnName=NOTE_TITLE
+# --field-end--
+# --field-start--
+fieldName=noteText
+columnName=NOTE_TEXT
+# --field-end--
+# --field-start--
+fieldName=group
+columnName=NOTE_GROUP
+# --field-end--
+# --field-start--
+fieldName=creationDate
+columnName=CREATION_DATE
+# --field-end--
+# --field-start--
+fieldName=updateDate
+columnName=UPDATE_DATE
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=neos.planner.entity.DbEvent
+tableName=PLANNER_EVENTS
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=event
+columnName=EVENTS_TITLE
+# --field-end--
+# --field-start--
+fieldName=date
+columnName=EVENTS_DATE
+# --field-end--
+# --field-start--
+fieldName=time
+columnName=EVENTS_TIME
+# --field-end--
+# --field-start--
+fieldName=remind
+columnName=EVENTS_REMIND
+# --field-end--
+# --field-start--
+fieldName=status
+columnName=EVENTS_STATUS
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

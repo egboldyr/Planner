@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_notes"
+            android:icon="@mipmap/ic_action_attachment"
+            android:title="@string/nav_drawer_notes"/>
+        <item
+            android:title="@string/nav_drawer_events">
+            <menu>
+                <item
+                    android:id="@+id/nav_all_events"
+                    android:icon="@mipmap/ic_action_event"
+                    android:title="@string/nav_drawer_events_all"/>
+                <item
+                    android:id="@+id/nav_today_events"
+                    android:title="@string/nav_drawer_events_today"/>
+                <item
+                    android:id="@+id/nav_important_events"
+                    android:title="@string/nav_drawer_events_important"/>
+            </menu>
+        </item>
+        <!--<item
+            android:title="@string/nav_drawer_contacts">
+            <menu>
+                <item
+                    android:id="@+id/nav_contacts"
+                    android:icon="@mipmap/ic_action_group"
+                    android:title="@string/nav_drawer_contacts"/>
+            </menu>
+
+        </item>-->
+    </group>
+
+</menu>
