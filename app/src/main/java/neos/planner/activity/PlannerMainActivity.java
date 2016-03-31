@@ -19,9 +19,13 @@ import android.view.MenuItem;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import neos.planner.R;
@@ -83,36 +87,7 @@ public class PlannerMainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                final CharSequence[] actions = {
-                    getBaseContext().getString(R.string.fabMain_new_note_dialog),
-                    getBaseContext().getString(R.string.fabMain_new_event_dialog)
-                    /*getBaseContext().getString(R.string.fabMain_new_contact_dialog),*/
-                };
-                builder.setItems(actions, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0: {
-                                Intent intent = new Intent(
-                                        PlannerMainActivity.this, PlannerAddNoteActivity.class);
-                                startActivityForResult(intent, ADD_NOTE_ACTIVITY_ACTION);
-                                break;
-                            }
-                            case 1: {
-                                Intent intent = new Intent(
-                                        PlannerMainActivity.this, PlannerAddEventActivity.class);
-                                startActivityForResult(intent, ADD_EVENT_ACTIVITY_ACTION);
-                                break;
-                            }
-                            case 2: {
-                                //Место для вызова активности создания нового контакта
-                                break;
-                            }
-                        }
-                    }
-                });
-                builder.show();
+                callChooseOperationDialog();
             }
         });
 
@@ -155,10 +130,6 @@ public class PlannerMainActivity extends AppCompatActivity
                 callSearchActivity();
                 break;
             }
-            case R.id.action_settings : {
-                //В будущем добавить настройки сюда
-                break;
-            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -182,19 +153,13 @@ public class PlannerMainActivity extends AppCompatActivity
             }
             case R.id.nav_today_events : {
                 toolbar.setTitle(R.string.nav_drawer_events_today);
-                //События за текущий день
+                getTodayEventsList();
                 break;
             }
-            case R.id.nav_important_events : {
-                toolbar.setTitle(R.string.nav_drawer_events_important);
-                //Важные события
+            case R.id.nav_search : {
+                callSearchActivity();
                 break;
             }
-            /*case R.id.nav_contacts : {
-                toolbar.setTitle(R.string.nav_drawer_contacts);
-                //Контакты
-                break;
-            }*/
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -230,11 +195,50 @@ public class PlannerMainActivity extends AppCompatActivity
         }
     }
 
-    /*Метод подготавливающий и вызывающий SearchEventOrNoteActivity*/
+    /*Метод подготавливающий и вызывающий PlannerAddNoteActivity*/
+    private void callAddNoteActivity() {
+        Intent intent = new Intent(
+                PlannerMainActivity.this, PlannerAddNoteActivity.class);
+        startActivityForResult(intent, ADD_NOTE_ACTIVITY_ACTION);
+    }
+
+    private void callAddEventActivity() {
+        Intent intent = new Intent(
+                PlannerMainActivity.this, PlannerAddEventActivity.class);
+        startActivityForResult(intent, ADD_EVENT_ACTIVITY_ACTION);
+    }
+
+    /*Метод подготавливающий и вызывающий PlannerSearchEventOrNoteActivity*/
     private void callSearchActivity() {
         Intent intent =
                 new Intent(PlannerMainActivity.this, PlannerSearchEventOrNoteActivity.class);
         startActivity(intent);
+    }
+
+    /*Метод подготавливающий и отображающий диалог выбора при создании
+    * нового события либо заметки*/
+    private void callChooseOperationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        final CharSequence[] actions = {
+                getBaseContext().getString(R.string.fabMain_new_note_dialog),
+                getBaseContext().getString(R.string.fabMain_new_event_dialog)
+        };
+        builder.setItems(actions, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0: {
+                        callAddNoteActivity();
+                        break;
+                    }
+                    case 1: {
+                        callAddEventActivity();
+                        break;
+                    }
+                }
+            }
+        });
+        builder.show();
     }
 
     /*Метод для получения всех пользовательских заметок находящихся в БД
@@ -261,6 +265,25 @@ public class PlannerMainActivity extends AppCompatActivity
         }
     }
 
+    /*Метод для получения пользовательских событий запланированных на
+    * текущий день из БД
+    * @return List<DbEvent> - Возвращает список запланированных событий на
+    *                         дату системного времени*/
+    private List<DbEvent> getTodayEventsFromDatabase() {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            Date currDate = calendar.getTime();
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+            QueryBuilder<DbEvent, Long> builder = eventsDAO.queryBuilder();
+            builder.where().eq("EVENTS_DATE", format.format(currDate));
+            List<DbEvent> list = eventsDAO.query(builder.prepare());
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /*Метод подготавливающий полный список со всеми пользовательскими
      *заметками для дальнейшего отображения на экране*/
     private void getNotesList() {
@@ -275,6 +298,16 @@ public class PlannerMainActivity extends AppCompatActivity
      *событиями для дальнейшего отображения на экране*/
     private void getEventsList() {
         events = getAllEventsFromDatabase();
+        DbEventAdapter adapter = new DbEventAdapter(events);
+        deleteAllRecyclerViewOnTouchListeners();
+        view.addOnItemTouchListener(eventItemClickListener);
+        view.setAdapter(adapter);
+    }
+
+    /*Метод подготавливающий полный список событий запланированных
+    * на текущий день для дальнейшеко отображения на экране*/
+    private void getTodayEventsList() {
+        events = getTodayEventsFromDatabase();
         DbEventAdapter adapter = new DbEventAdapter(events);
         deleteAllRecyclerViewOnTouchListeners();
         view.addOnItemTouchListener(eventItemClickListener);

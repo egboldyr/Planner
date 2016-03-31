@@ -11,6 +11,7 @@
     <string name="nav_drawer_events_today">Сегодня</string>
     <string name="nav_drawer_events_important">Важно</string>
     <string name="nav_drawer_contacts">Контакты</string>
+    <string name="nav_drawer_search">Поиск</string>
 
     <!-- Текстовые элементы PlannerEditNoteActivity-->
     <string name="edit_note_header">Редактирование</string>
