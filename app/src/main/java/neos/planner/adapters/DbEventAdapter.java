@@ -54,7 +54,7 @@ public class DbEventAdapter extends RecyclerView.Adapter<DbEventAdapter.ViewHold
         holder.dateAndTime.setText(event.getDate() + " " + event.getTime());
         holder.status.setText(event.getStatus());
         holder.body.setText(event.getEvent());
-        holder.share.setOnClickListener(new EventShareButtonClickListener());
+        holder.share.setOnClickListener(new EventShareButtonClickListener(event));
         /*В будущем разобраться почему тот же самый код не работает через отдельный Listener
         * Класс описывающий слушатель для данного элемента EventDeleteButtonClickListener*/
         holder.remove.setOnClickListener(new View.OnClickListener() {
