@@ -77,17 +77,12 @@ public class PlannerAddEventActivity extends AppCompatActivity {
         mEventDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 DatePickerDialog dialog =
                         new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         monthOfYear++;
-                        if (monthOfYear < 10) {
-                            mEventDate.setText(dayOfMonth + ".0" + monthOfYear + "." + year);
-                        } else {
-                            mEventDate.setText(dayOfMonth + "." + monthOfYear + "." + year);
-                        };
+                        mEventDate.setText(parseDateFromDatePicker(dayOfMonth, monthOfYear, year));
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                 dialog.show();
@@ -101,11 +96,7 @@ public class PlannerAddEventActivity extends AppCompatActivity {
                 TimePickerDialog dialog = new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if (minute < 10) {
-                            mEventTime.setText(hourOfDay + ":0" + minute);
-                        } else {
-                            mEventTime.setText(hourOfDay + ":" + minute);
-                        }
+                        mEventTime.setText(parseTimeFromTimePicker(hourOfDay, minute));
                     }
                 }, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
                 dialog.show();
@@ -113,17 +104,10 @@ public class PlannerAddEventActivity extends AppCompatActivity {
         });
 
         mRemindMeParam = (Spinner) findViewById(R.id.mRemindMeParam);
-        String[] reminds = {
-                getBaseContext().getString(R.string.event_remind_15_min),
-                getBaseContext().getString(R.string.event_remind_30_min),
-                getBaseContext().getString(R.string.event_remind_1_hour),
-                getBaseContext().getString(R.string.event_remind_3_hour),
-                getBaseContext().getString(R.string.event_remind_6_hour)
-        };
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, reminds);
+                new ArrayAdapter<String>(this,
+                        android.R.layout.simple_spinner_dropdown_item, fillRemindVariantsToSpinner());
         mRemindMeParam.setAdapter(adapter);
-
         mEventBody = (EditText) findViewById(R.id.mEventBody);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAddEvent);
@@ -146,7 +130,49 @@ public class PlannerAddEventActivity extends AppCompatActivity {
         });
     }
 
-    /*Временное решение для удобства сохранения времени до события в нужном формате*/
+    /*Метод возвращающий строковое значение даты на основании параметров DatePicker
+    * @param Integer dayOfMonth  - Параметр передающий число
+    * @param Integer monthOfYear - Параметр передающий месяц
+    * @param Integer year        - Параметр передающий год
+    * @return String             - Возвращается строковое представление даты*/
+    private String parseDateFromDatePicker(Integer dayOfMonth, Integer monthOfYear, Integer year) {
+        if (monthOfYear < 10) {
+            if (dayOfMonth < 10) {
+                return "0" + dayOfMonth + ".0" + monthOfYear + "." + year;
+            } else {
+                return dayOfMonth + ".0" + monthOfYear + "." + year;
+            }
+        } else {
+            return dayOfMonth + "." + monthOfYear + "." + year;
+        }
+    }
+
+    /*Метод возвращающий строковое значение времени на основании параметров TimePicker
+    * @param Integer hourOfDay - Параметр передающий количество часов
+    * @param Integer minute    - Параметр передающий количество минут
+    * @return String           - Возвращает строковое представление времени*/
+    private String parseTimeFromTimePicker(Integer hourOfDay, Integer minute) {
+        if (hourOfDay < 10) {
+            return hourOfDay + ":0" + minute;
+        } else {
+            return hourOfDay + ":" + minute;
+        }
+    }
+
+    /*Метод запоняющий значения списка с вариантами напоминаний
+    * @return String[] - Возвращает список элементов для заполнения вариантов в списке*/
+    private String[] fillRemindVariantsToSpinner() {
+        return new String[] {
+                getBaseContext().getString(R.string.event_remind_15_min),
+                getBaseContext().getString(R.string.event_remind_30_min),
+                getBaseContext().getString(R.string.event_remind_1_hour),
+                getBaseContext().getString(R.string.event_remind_3_hour),
+                getBaseContext().getString(R.string.event_remind_6_hour)
+        };
+    }
+
+    /*Временное решение для удобства сохранения времени до события в нужном формате
+    * @return String - Возвращает строковое представление времени*/
     private String parseRemindOption(String remind) {
         if (remind.equals(getBaseContext().getString(R.string.event_remind_15_min))) {
             return "00:15";
@@ -161,7 +187,9 @@ public class PlannerAddEventActivity extends AppCompatActivity {
         }
     }
 
-    /*Метод помещающий созданное пользовательское событие в AlarmManager*/
+    /*Метод помещающий созданное пользовательское событие в AlarmManager
+    * @param DbEvent event - Параметр передающий событие для обработки
+    * @param Long eventId  - Параметр передающий идентефикатор события*/
     private void addEventToAlarmManager(DbEvent event, Long eventId) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         Calendar calendar = Calendar.getInstance();
@@ -188,7 +216,7 @@ public class PlannerAddEventActivity extends AppCompatActivity {
 
             PendingIntent pendingIntent =
                     PendingIntent.getBroadcast(this, Integer.parseInt(id),
-                            intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                            intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 

@@ -1,5 +1,9 @@
 package neos.planner.adapters;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +21,7 @@ import neos.planner.R;
 import neos.planner.entity.DbEvent;
 import neos.planner.listeners.EventDeleteButtonClickListener;
 import neos.planner.listeners.EventShareButtonClickListener;
+import neos.planner.receiver.EventRemindReceiver;
 import neos.planner.sqlite.ORMLiteOpenHelper;
 
 /**
@@ -69,9 +74,19 @@ public class DbEventAdapter extends RecyclerView.Adapter<DbEventAdapter.ViewHold
                     events.remove(position);
                     dao.deleteById(event.getId());
 
+                    Intent intent = new Intent(v.getContext(), EventRemindReceiver.class);
+                    intent.putExtra("BODY", event.getEvent());
+                    String id = Long.toString(event.getId());
+
+                    PendingIntent pendingIntent =
+                            PendingIntent.getBroadcast(v.getContext(), Integer.parseInt(id),
+                                    intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    AlarmManager manager =
+                            (AlarmManager) v.getContext().getSystemService(Context.ALARM_SERVICE);
+                    manager.cancel(pendingIntent);
+
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, events.size());
-                    //Дополнить логикой удаления оповещения из AlarmManager
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

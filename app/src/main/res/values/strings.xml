@@ -51,6 +51,11 @@
     <string name="save_changes_dialog_ok">OK</string>
     <string name="save_changes_dialog_cancel">Cancel</string>
 
+    <!--Текстовые элементы компонентов диалогового окна (Удаление заметки)-->
+    <string name="delete_note_dialog_message">Delete note?</string>
+    <string name="delete_note_dialog_ok">OK</string>
+    <string name="delete_note_dialog_cancel">Cancel</string>
+
     <!-- Группы элементов для выпадающих списков -->
     <!-- Тесктовые элементы Группы заметок-->
     <string name="note_group_general">General</string>

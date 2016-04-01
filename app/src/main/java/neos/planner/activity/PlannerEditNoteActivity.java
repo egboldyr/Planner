@@ -120,13 +120,7 @@ public class PlannerEditNoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case MNU_DELETE_NOTE_OPTION : {
-                try {
-                    notesDAO.delete(note);
-                    setResult(RESULT_OK);
-                    finish();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                callDeleteNoteDialog();
                 break;
             }
         }
@@ -186,6 +180,31 @@ public class PlannerEditNoteActivity extends AppCompatActivity {
                     }
                 });
         builder.setCancelable(false);
+        builder.show();
+    }
+
+    private void callDeleteNoteDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage(R.string.delete_note_dialog_message);
+        builder.setPositiveButton(R.string.delete_note_dialog_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    notesDAO.delete(note);
+                    setResult(RESULT_OK);
+                    finish();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.delete_note_dialog_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
         builder.show();
     }
 }

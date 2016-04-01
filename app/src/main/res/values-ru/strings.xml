@@ -37,7 +37,7 @@
     <string name="event_status_done">Выполнено</string>
 
     <!-- Диалоги -->
-    <!-- Тесктовые элементы диалогового окна выбора (Создание заматки, события, контакта-->
+    <!-- Тесктовые элементы диалогового окна выбора (Создание заматки, события, контакта)-->
     <string name="fabMain_new_note_dialog">Заметка</string>
     <string name="fabMain_new_event_dialog">Событие</string>
     <string name="fabMain_new_contact_dialog">Контакт</string>
@@ -50,7 +50,12 @@
     <string name="save_changes_dialog_message">Сохранить изменения?</string>
     <string name="save_changes_dialog_ok">OK</string>
     <string name="save_changes_dialog_cancel">Отмена</string>
-    
+
+    <!--Текстовые элементы компонентов диалогового окна (Удаление заметки)-->
+    <string name="delete_note_dialog_message">Удалить заметку?</string>
+    <string name="delete_note_dialog_ok">OK</string>
+    <string name="delete_note_dialog_cancel">Отмена</string>
+
     <!-- Группы элементов для выпадающих списков -->
     <!-- Группы заметок-->
     <string name="note_group_general">Общая</string>
