@@ -6,8 +6,10 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -115,19 +117,51 @@ public class PlannerAddEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    DbEvent event = new DbEvent(mEventBody.getText().toString(),
-                            mEventDate.getText().toString(), mEventTime.getText().toString(),
-                            getBaseContext().getString(R.string.event_status_active),mRemindMeParam.getSelectedItem().toString());
-                    event.setRemind(parseRemindOption(mRemindMeParam.getSelectedItem().toString()));
-                    eventDAO.create(event);
-                    addEventToAlarmManager(event, eventDAO.extractId(event));
-                    setResult(RESULT_OK, new Intent());
-                    finish();
+                    if (checkTime(mEventTime.getText().toString(), v)
+                            & checkDate(mEventDate.getText().toString(), v)) {
+                        DbEvent event = new DbEvent(mEventBody.getText().toString(),
+                                mEventDate.getText().toString(), mEventTime.getText().toString(),
+                                getBaseContext().getString(R.string.event_status_active),
+                                mRemindMeParam.getSelectedItem().toString());
+                        event.setRemind(parseRemindOption(mRemindMeParam.getSelectedItem().toString()));
+                        eventDAO.create(event);
+                        addEventToAlarmManager(event, eventDAO.extractId(event));
+                        setResult(RESULT_OK, new Intent());
+                        finish();
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    /*Метод проверяющий задана ли дата перед сохранением события
+    * @param String date - параметр передаюзий строку с датой
+    * @return Boolean    - возвращает результат проверки (true - Удачно, false - Не удачно)*/
+    private boolean checkDate(String date, View view) {
+        if (date.equals("") | date.equals(null)) {
+            Snackbar.make(view, R.string.snack_bar_null_event_date, Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /*Метод проверяющий задано ли время перед сохранением события
+    * @param String time - параметр передаюзий строку с датой
+    * @return Boolean    - возвращает результат проверки (true - Удачно, false - Не удачно)*/
+    private boolean checkTime(String time, View view) {
+        if (time.equals("") | time.equals(null)) {
+            Snackbar.make(view, R.string.snack_bar_null_event_time, Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /*Метод возвращающий строковое значение даты на основании параметров DatePicker
@@ -153,8 +187,15 @@ public class PlannerAddEventActivity extends AppCompatActivity {
     * @return String           - Возвращает строковое представление времени*/
     private String parseTimeFromTimePicker(Integer hourOfDay, Integer minute) {
         if (hourOfDay < 10) {
-            return hourOfDay + ":0" + minute;
+            if (minute < 10) {
+                return "0" + hourOfDay + ":0" + minute;
+            } else {
+                return "0" + hourOfDay + ":" + minute;
+            }
         } else {
+            if (minute < 10) {
+                return hourOfDay + ":0" + minute;
+            }
             return hourOfDay + ":" + minute;
         }
     }

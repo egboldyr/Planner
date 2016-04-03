@@ -28,6 +28,9 @@
     <string name="add_event_time_hint">Click for select time</string>
     <string name="add_event_body_hint">Enter event</string>
 
+    <!-- Текстовые элементы PlannerSearchEventOrNoteActivity-->
+    <string name="search_header">Search</string>
+
     <!-- Тесктовые элементы компонетов основного меню-->
     <string name="action_settings">Settings</string>
     <string name="action_find">Search</string>
@@ -37,7 +40,7 @@
     <string name="event_status_done">Done</string>
 
     <!-- Диалоги -->
-    <!-- Тесктовые элементы компонентов диалогового окна выбора (Создание заматки, события, контакта-->
+    <!-- Тесктовые элементы компонентов диалогового окна выбора (Создание заматки, события, контакта)-->
     <string name="fabMain_new_note_dialog">Note</string>
     <string name="fabMain_new_event_dialog">Event</string>
     <string name="fabMain_new_contact_dialog">Contact</string>
@@ -51,10 +54,22 @@
     <string name="save_changes_dialog_ok">OK</string>
     <string name="save_changes_dialog_cancel">Cancel</string>
 
-    <!--Текстовые элементы компонентов диалогового окна (Удаление заметки)-->
+    <!-- Текстовые элементы компонентов диалогового окна (Удаление заметки)-->
     <string name="delete_note_dialog_message">Delete note?</string>
     <string name="delete_note_dialog_ok">OK</string>
     <string name="delete_note_dialog_cancel">Cancel</string>
+
+    <!--Текстовые элементы диалогового окна выбора группы поиска-->
+    <string name="search_on_notes">Search on notes</string>
+    <string name="search_on_events">Search on events</string>
+    <string name="searching_progress">Searching...</string>
+
+    <!-- Оповещения-->
+    <!-- Текстовое сообщение о не заполненом поле дата-->
+    <string name="snack_bar_null_event_date">Error! Does not set date!</string>
+
+    <!--Текстовое сообщение о не заполненом поле время-->
+    <string name="snack_bar_null_event_time">Error! Does not set the time!</string>
 
     <!-- Группы элементов для выпадающих списков -->
     <!-- Тесктовые элементы Группы заметок-->

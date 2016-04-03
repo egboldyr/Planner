@@ -11,6 +11,7 @@
 
         <!-- Все разрешения запрошенные у пользователя устройства -->
         <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+        <uses-permission android:name="android.permission.VIBRATE"/>
 
         <!-- Все Активити которые используются в приложении-->
         <activity

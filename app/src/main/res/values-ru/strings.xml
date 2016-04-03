@@ -28,6 +28,9 @@
     <string name="add_event_time_hint">Выбрать время</string>
     <string name="add_event_body_hint">Описание события</string>
 
+    <!-- Текстовые элементы PlannerSearchEventOrNoteActivity-->
+    <string name="search_header">Поиск</string>
+
     <!-- Тесктовые элементы основного меню-->
     <string name="action_settings">Настройки</string>
     <string name="action_find">Поиск</string>
@@ -55,6 +58,18 @@
     <string name="delete_note_dialog_message">Удалить заметку?</string>
     <string name="delete_note_dialog_ok">OK</string>
     <string name="delete_note_dialog_cancel">Отмена</string>
+
+    <!--Текстовые элементы диалогового окна выбора группы поиска-->
+    <string name="search_on_notes">Поиск по заметкам</string>
+    <string name="search_on_events">Поиск по событиям</string>
+    <string name="searching_progress">Выполняется поиск...</string>
+
+    <!-- Оповещения-->
+    <!-- Текстовое сообщение о не заполненом поле дата-->
+    <string name="snack_bar_null_event_date">Ошибка! Не установлена дата!</string>
+
+    <!--Текстовое сообщение о не заполненом поле время-->
+    <string name="snack_bar_null_event_time">Ошибка! Не установленно время!</string>
 
     <!-- Группы элементов для выпадающих списков -->
     <!-- Группы заметок-->

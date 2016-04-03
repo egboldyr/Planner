@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 
 import neos.planner.R;
 
@@ -31,6 +32,7 @@ public class EventRemindReceiver extends BroadcastReceiver{
                 .setContentText(extras.getString("BODY"))
                 .setDefaults(Notification.DEFAULT_ALL);
         Notification notification = builder.build();
+        notification.vibrate = new long[] {1000L, 1000L, 1000L};
         manager.notify(1, notification);
     }
 }
