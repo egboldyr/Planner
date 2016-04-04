@@ -20,17 +20,25 @@ import android.view.MenuItem;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.adapters.DbEventAdapter;
 import neos.planner.adapters.DbNoteAdapter;
+import neos.planner.decorator.CalendarDayDecorator;
 import neos.planner.entity.DbEvent;
 import neos.planner.entity.DbNote;
 import neos.planner.listeners.DbEventItemClickListener;
@@ -38,7 +46,7 @@ import neos.planner.listeners.DbNoteItemClickListener;
 import neos.planner.sqlite.ORMLiteOpenHelper;
 
 public class PlannerMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnDateSelectedListener {
 
     //Блок описания констант
     private static final int ADD_NOTE_ACTIVITY_ACTION = 1000;
@@ -47,15 +55,22 @@ public class PlannerMainActivity extends AppCompatActivity
     private static final int EDIT_EVENT_ACTIVITY_ACTION = 4000;
 
     //Блок переменных для сбора, хранения и обработки пользовательских данных
-    private Toolbar toolbar;
-    private RecyclerView view;
-    private List<DbNote> notes;
-    private List<DbEvent> events;
+    @Bind(R.id.barMainToolbar) Toolbar toolbar;
+    @Bind(R.id.mMaterialCalendar) MaterialCalendarView materialCalendar;
+    @Bind(R.id.mRecyclerView) RecyclerView view;
+    @Bind(R.id.fabMain) FloatingActionButton fab;
+    @Bind(R.id.drawer_layout) DrawerLayout drawer;
+    @Bind(R.id.nav_view) NavigationView navigationView;
 
     //Блок переменных для работы с БД
     private ORMLiteOpenHelper helper;
     private Dao<DbNote, Long> notesDAO;
     private Dao<DbEvent, Long> eventsDAO;
+
+    //Блок переменных для хранения даных полученных с БД
+    private List<DbNote> notes;
+    private List<DbEvent> events;
+    private CalendarDayDecorator decorator;
 
     /*Слушатели события OnTouchItem для двух разных списков*/
     private DbNoteItemClickListener noteItemClickListener;
@@ -65,7 +80,8 @@ public class PlannerMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.barMainToolbar);
+        ButterKnife.bind(this);
+        toolbar.setTitle(R.string.nav_drawer_events_today);
         setSupportActionBar(toolbar);
 
         try {
@@ -76,14 +92,21 @@ public class PlannerMainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        view = (RecyclerView) findViewById(R.id.mRecyclerView);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         view.setLayoutManager(llm);
 
         createOnTouchListeners();
-        getEventsList();
+        getTodayEventsList();
+        List<CalendarDay> days = getDecorateAllEventsOnCalendar();
+        decorator = new CalendarDayDecorator(days);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabMain);
+        materialCalendar.setSelectedDate(CalendarDay.today());
+        materialCalendar.setCurrentDate(CalendarDay.today());
+        materialCalendar.setFirstDayOfWeek(Calendar.MONDAY);
+        materialCalendar.setCalendarDisplayMode(CalendarMode.WEEKS);
+        materialCalendar.setOnDateChangedListener(this);
+        materialCalendar.addDecorator(decorator);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,13 +114,11 @@ public class PlannerMainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -152,8 +173,8 @@ public class PlannerMainActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_today_events : {
-                toolbar.setTitle(R.string.nav_drawer_events_today);
                 getTodayEventsList();
+                toolbar.setTitle(R.string.nav_drawer_events_today);
                 break;
             }
             case R.id.nav_search : {
@@ -168,7 +189,7 @@ public class PlannerMainActivity extends AppCompatActivity
 
     /*Метод обрабатывающий результаты которые вернули другие активити
     * @param requstCode  - Параметр передающий код запроса
-    * @param resultCode* - Параметр передающий код ответа
+    * @param resultCode  - Параметр передающий код ответа
     * @param data        - Параметр передающий событие*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -185,6 +206,8 @@ public class PlannerMainActivity extends AppCompatActivity
                 }
                 case ADD_EVENT_ACTIVITY_ACTION : {
                     getEventsList();
+                    materialCalendar.removeDecorator(decorator);
+                    materialCalendar.addDecorator(updateEventsOnCalendar());
                     break;
                 }
                 case EDIT_EVENT_ACTIVITY_ACTION : {
@@ -193,6 +216,16 @@ public class PlannerMainActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    /*Метод обрабатывающий выбор определенного дня в календаре*/
+    @Override
+    public void onDateSelected(MaterialCalendarView widget, CalendarDay date, boolean selected) {
+        events = getTodayEventsFromDatabase(date.getDate());
+        DbEventAdapter adapter = new DbEventAdapter(events);
+        deleteAllRecyclerViewOnTouchListeners();
+        view.addOnItemTouchListener(eventItemClickListener);
+        view.setAdapter(adapter);
     }
 
     /*Метод подготавливающий и вызывающий PlannerAddNoteActivity*/
@@ -266,16 +299,16 @@ public class PlannerMainActivity extends AppCompatActivity
     }
 
     /*Метод для получения пользовательских событий запланированных на
-    * текущий день из БД
+    * определенный день из БД
+    * @param Date currDate  - Параметр передающий дату для выборки запланированных событий
     * @return List<DbEvent> - Возвращает список запланированных событий на
     *                         дату системного времени*/
-    private List<DbEvent> getTodayEventsFromDatabase() {
+    private List<DbEvent> getTodayEventsFromDatabase(Date currDate) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            Date currDate = calendar.getTime();
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
             QueryBuilder<DbEvent, Long> builder = eventsDAO.queryBuilder();
             builder.where().eq("EVENTS_DATE", format.format(currDate));
+            toolbar.setTitle(format.format(currDate));
             List<DbEvent> list = eventsDAO.query(builder.prepare());
             return list;
         } catch (SQLException e) {
@@ -307,7 +340,10 @@ public class PlannerMainActivity extends AppCompatActivity
     /*Метод подготавливающий полный список событий запланированных
     * на текущий день для дальнейшеко отображения на экране*/
     private void getTodayEventsList() {
-        events = getTodayEventsFromDatabase();
+        Calendar calendar = Calendar.getInstance();
+        Date currDate = calendar.getTime();
+        materialCalendar.setSelectedDate(calendar.getTime());
+        events = getTodayEventsFromDatabase(currDate);
         DbEventAdapter adapter = new DbEventAdapter(events);
         deleteAllRecyclerViewOnTouchListeners();
         view.addOnItemTouchListener(eventItemClickListener);
@@ -340,5 +376,31 @@ public class PlannerMainActivity extends AppCompatActivity
     private void deleteAllRecyclerViewOnTouchListeners() {
         view.removeOnItemTouchListener(eventItemClickListener);
         view.removeOnItemTouchListener(noteItemClickListener);
+    }
+
+    /*Метод подготавливающий события для отметки в календаре*/
+    private List<CalendarDay> getDecorateAllEventsOnCalendar() {
+        List<CalendarDay> days = new ArrayList<>();
+        try {
+            List<DbEvent> events = eventsDAO.queryForAll();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            for (DbEvent event : events) {
+                try {
+                    days.add(CalendarDay.from(sdf.parse(event.getDate())));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return days;
+    }
+
+    private CalendarDayDecorator updateEventsOnCalendar() {
+        List<CalendarDay> days = getDecorateAllEventsOnCalendar();
+        decorator = new CalendarDayDecorator(days);
+        return decorator;
     }
 }
