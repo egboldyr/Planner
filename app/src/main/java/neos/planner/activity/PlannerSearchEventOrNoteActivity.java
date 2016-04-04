@@ -21,6 +21,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.adapters.DbEventAdapter;
 import neos.planner.adapters.DbNoteAdapter;
@@ -53,26 +55,23 @@ public class PlannerSearchEventOrNoteActivity
     private Dao<DbEvent, Long> eventsDAO;
 
     /*Элементы активити с поисковым запросом и кнопкой поиск*/
-    private EditText mSearchRequest;
-    private ImageButton btnStartSearch;
-    private RecyclerView mSearchResults;
+    @Bind(R.id.barSearch) Toolbar toolbar;
+    @Bind(R.id.mSearchRequest) EditText mSearchRequest;
+    @Bind(R.id.bthStartSearch) ImageButton btnStartSearch;
+    @Bind(R.id.mSearchResults) RecyclerView mSearchResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.barSearch);
         toolbar.setTitle(R.string.search_header);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        mSearchRequest = (EditText) findViewById(R.id.mSearchRequest);
-
-        btnStartSearch = (ImageButton) findViewById(R.id.bthStartSearch);
         btnStartSearch.setOnClickListener(this);
 
-        mSearchResults = (RecyclerView) findViewById(R.id.mSearchResults);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         mSearchResults.setLayoutManager(llm);
     }

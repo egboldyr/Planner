@@ -17,6 +17,8 @@ import com.j256.ormlite.dao.Dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.entity.DbEvent;
 import neos.planner.listeners.EventDeleteButtonClickListener;
@@ -104,19 +106,15 @@ public class DbEventAdapter extends RecyclerView.Adapter<DbEventAdapter.ViewHold
       с компонентами виджетов для отображения данных */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView dateAndTime;
-        private TextView status;
-        private TextView body;
-        private ImageButton share;
-        private ImageButton remove;
+        @Bind(R.id.mEventDateAndTime) TextView dateAndTime;
+        @Bind(R.id.mEventStatus) TextView status;
+        @Bind(R.id.mEventText) TextView body;
+        @Bind(R.id.btnShareEvent) ImageButton share;
+        @Bind(R.id.btnRemoveEvent) ImageButton remove;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            dateAndTime = (TextView) itemView.findViewById(R.id.mEventDateAndTime);
-            status = (TextView) itemView.findViewById(R.id.mEventStatus);
-            body = (TextView) itemView.findViewById(R.id.mEventText);
-            share = (ImageButton) itemView.findViewById(R.id.btnShareEvent);
-            remove = (ImageButton) itemView.findViewById(R.id.btnRemoveEvent);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

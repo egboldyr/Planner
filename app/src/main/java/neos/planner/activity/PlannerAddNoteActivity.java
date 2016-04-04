@@ -19,6 +19,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.entity.DbNote;
 import neos.planner.sqlite.ORMLiteOpenHelper;
@@ -35,17 +37,20 @@ public class PlannerAddNoteActivity extends AppCompatActivity {
     //Блок переменных для работы с БД
     private ORMLiteOpenHelper helper;
     private Dao<DbNote, Long> notesDAO;
+    private DbNote note = new DbNote();
 
     //Блок пременных для работы с пользовательскими данными
-    private DbNote note = new DbNote();;
-    private Spinner group;
-    private EditText title;
-    private EditText text;
+    @Bind(R.id.barNoteDetails) Toolbar toolbar;
+    @Bind(R.id.mSingleNoteGroup) Spinner group;
+    @Bind(R.id.mSingleNoteTitle) EditText title;
+    @Bind(R.id.mSingleNoteText) EditText text;
+    @Bind(R.id.fabEditNote) FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_details);
+        ButterKnife.bind(this);
 
         try {
             helper = OpenHelperManager.getHelper(this, ORMLiteOpenHelper.class);
@@ -54,12 +59,10 @@ public class PlannerAddNoteActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.barNoteDetails);
         toolbar.setTitle(R.string.add_note_header);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        group = (Spinner) findViewById(R.id.mSingleNoteGroup);
         String[] groups = {
             getBaseContext().getString(R.string.note_group_general),
             getBaseContext().getString(R.string.note_group_favorites)
@@ -68,10 +71,6 @@ public class PlannerAddNoteActivity extends AppCompatActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, groups);
         group.setAdapter(adapter);
 
-        title = (EditText) findViewById(R.id.mSingleNoteTitle);
-        text = (EditText) findViewById(R.id.mSingleNoteText);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabEditNote);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

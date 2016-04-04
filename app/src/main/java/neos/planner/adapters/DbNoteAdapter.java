@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.entity.DbNote;
 import neos.planner.listeners.NoteShareButtonClickListener;
@@ -62,19 +64,15 @@ public class DbNoteAdapter extends RecyclerView.Adapter<DbNoteAdapter.ViewHolder
       с компонентами виджетов для отображения данных */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView title;
-        private TextView text;
-        private TextView group;
-        private TextView date;
-        private ImageButton share;
+        @Bind(R.id.mNoteTitle) TextView title;
+        @Bind(R.id.mNoteText) TextView text;
+        @Bind(R.id.mNoteGroup) TextView group;
+        @Bind(R.id.mUpdateDate) TextView date;
+        @Bind(R.id.btnShareNote) ImageButton share;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.mNoteTitle);
-            text = (TextView) itemView.findViewById(R.id.mNoteText);
-            group = (TextView) itemView.findViewById(R.id.mNoteGroup);
-            date = (TextView) itemView.findViewById(R.id.mUpdateDate);
-            share = (ImageButton) itemView.findViewById(R.id.btnShareNote);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

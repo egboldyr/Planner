@@ -28,6 +28,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.entity.DbEvent;
 import neos.planner.entity.DbNote;
@@ -47,10 +49,12 @@ public class PlannerEditEventActivity extends AppCompatActivity {
     private Bundle extras;
 
     /*Переменные для работы с элементами активити*/
-    private TextView mEventDate;
-    private TextView mEventTime;
-    private Spinner mRemindMeParam;
-    private EditText mEventBody;
+    @Bind(R.id.barNoteDetails)  Toolbar toolbar;
+    @Bind(R.id.mEventDate) TextView mEventDate;
+    @Bind(R.id.mEventTime) TextView mEventTime;
+    @Bind(R.id.mRemindMeParam) Spinner mRemindMeParam;
+    @Bind(R.id.mEventBody) EditText mEventBody;
+    @Bind(R.id.fabAddEvent) FloatingActionButton fab;
 
     /*Переменные для хранения пользовательских данных*/
     private DbEvent event;
@@ -68,9 +72,9 @@ public class PlannerEditEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
+        ButterKnife.bind(this);
         extras = getIntent().getExtras();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.barNoteDetails);
         toolbar.setTitle(R.string.edit_event_header);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -86,7 +90,6 @@ public class PlannerEditEventActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        mEventDate = (TextView) findViewById(R.id.mEventDate);
         mEventDate.setText(event.getDate());
         mEventDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +111,6 @@ public class PlannerEditEventActivity extends AppCompatActivity {
             }
         });
 
-        mEventTime = (TextView) findViewById(R.id.mEventTime);
         mEventTime.setText(event.getTime());
         mEventTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +129,6 @@ public class PlannerEditEventActivity extends AppCompatActivity {
             }
         });
 
-        mRemindMeParam = (Spinner) findViewById(R.id.mRemindMeParam);
         String[] reminds = {
                 getBaseContext().getString(R.string.event_remind_15_min),
                 getBaseContext().getString(R.string.event_remind_30_min),
@@ -140,10 +141,8 @@ public class PlannerEditEventActivity extends AppCompatActivity {
         mRemindMeParam.setAdapter(adapter);
         setRemindOption(event.getRemind());
 
-        mEventBody = (EditText) findViewById(R.id.mEventBody);
         mEventBody.setText(event.getEvent());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAddEvent);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

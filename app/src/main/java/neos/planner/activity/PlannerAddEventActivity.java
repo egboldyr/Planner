@@ -30,6 +30,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.entity.DbEvent;
 import neos.planner.receiver.EventRemindReceiver;
@@ -48,10 +50,12 @@ public class PlannerAddEventActivity extends AppCompatActivity {
     private Calendar calendar;
 
     /*Переменные для работы с элементами активити*/
-    private TextView mEventDate;
-    private TextView mEventTime;
-    private Spinner mRemindMeParam;
-    private EditText mEventBody;
+    @Bind(R.id.barNoteDetails) Toolbar toolbar;
+    @Bind(R.id.mEventDate) TextView mEventDate;
+    @Bind(R.id.mEventTime) TextView mEventTime;
+    @Bind(R.id.mRemindMeParam) Spinner mRemindMeParam;
+    @Bind(R.id.mEventBody) EditText mEventBody;
+    @Bind(R.id.fabAddEvent) FloatingActionButton fab;
 
     /*Переменные хранящие объекты для доступа к БД*/
     private ORMLiteOpenHelper helper;
@@ -61,8 +65,8 @@ public class PlannerAddEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.barNoteDetails);
         toolbar.setTitle(R.string.add_event_header);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -75,23 +79,21 @@ public class PlannerAddEventActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        mEventDate = (TextView) findViewById(R.id.mEventDate);
         mEventDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatePickerDialog dialog =
                         new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        monthOfYear++;
-                        mEventDate.setText(parseDateFromDatePicker(dayOfMonth, monthOfYear, year));
-                    }
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                monthOfYear++;
+                                mEventDate.setText(parseDateFromDatePicker(dayOfMonth, monthOfYear, year));
+                            }
+                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                 dialog.show();
             }
         });
 
-        mEventTime = (TextView) findViewById(R.id.mEventTime);
         mEventTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,14 +107,11 @@ public class PlannerAddEventActivity extends AppCompatActivity {
             }
         });
 
-        mRemindMeParam = (Spinner) findViewById(R.id.mRemindMeParam);
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this,
                         android.R.layout.simple_spinner_dropdown_item, fillRemindVariantsToSpinner());
         mRemindMeParam.setAdapter(adapter);
-        mEventBody = (EditText) findViewById(R.id.mEventBody);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAddEvent);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
