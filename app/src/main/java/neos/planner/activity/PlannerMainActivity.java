@@ -38,7 +38,9 @@ import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.adapters.DbEventAdapter;
 import neos.planner.adapters.DbNoteAdapter;
-import neos.planner.decorator.CalendarDayDecorator;
+import neos.planner.async.MarkAllEventsOnCalendar;
+import neos.planner.decorator.CalendarDaysDecorator;
+import neos.planner.decorator.CalendarOneDayDecorator;
 import neos.planner.entity.DbEvent;
 import neos.planner.entity.DbNote;
 import neos.planner.listeners.DbEventItemClickListener;
@@ -70,7 +72,7 @@ public class PlannerMainActivity extends AppCompatActivity
     //Блок переменных для хранения даных полученных с БД
     private List<DbNote> notes;
     private List<DbEvent> events;
-    private CalendarDayDecorator decorator;
+    private CalendarDaysDecorator decorator;
 
     /*Слушатели события OnTouchItem для двух разных списков*/
     private DbNoteItemClickListener noteItemClickListener;
@@ -97,15 +99,15 @@ public class PlannerMainActivity extends AppCompatActivity
 
         createOnTouchListeners();
         getTodayEventsList();
-        List<CalendarDay> days = getDecorateAllEventsOnCalendar();
-        decorator = new CalendarDayDecorator(days);
 
         materialCalendar.setSelectedDate(CalendarDay.today());
         materialCalendar.setCurrentDate(CalendarDay.today());
         materialCalendar.setFirstDayOfWeek(Calendar.MONDAY);
         materialCalendar.setCalendarDisplayMode(CalendarMode.WEEKS);
         materialCalendar.setOnDateChangedListener(this);
-        materialCalendar.addDecorator(decorator);
+
+        MarkAllEventsOnCalendar marker = new MarkAllEventsOnCalendar(this, materialCalendar);
+        marker.execute();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,13 +207,13 @@ public class PlannerMainActivity extends AppCompatActivity
                     break;
                 }
                 case ADD_EVENT_ACTIVITY_ACTION : {
-                    getEventsList();
-                    materialCalendar.removeDecorator(decorator);
-                    materialCalendar.addDecorator(updateEventsOnCalendar());
+                    getTodayEventsList();
+                    Bundle bundle = data.getExtras();
+                    materialCalendar.addDecorator(updateEventsOnCalendar(bundle.getString("DATE")));
                     break;
                 }
                 case EDIT_EVENT_ACTIVITY_ACTION : {
-                    getEventsList();
+                    getTodayEventsList();
                     break;
                 }
             }
@@ -378,29 +380,18 @@ public class PlannerMainActivity extends AppCompatActivity
         view.removeOnItemTouchListener(noteItemClickListener);
     }
 
-    /*Метод подготавливающий события для отметки в календаре*/
-    private List<CalendarDay> getDecorateAllEventsOnCalendar() {
-        List<CalendarDay> days = new ArrayList<>();
+    /*Метод создающий декоатор для тетки в календаре нового события
+    * @param String date - Параметр передающий строковое значение даты*/
+    private CalendarOneDayDecorator updateEventsOnCalendar(String date) {
         try {
-            List<DbEvent> events = eventsDAO.queryForAll();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-            for (DbEvent event : events) {
-                try {
-                    days.add(CalendarDay.from(sdf.parse(event.getDate())));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (SQLException e) {
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+            Date addDate = format.parse(date);
+            CalendarDay day = CalendarDay.from(addDate);
+            CalendarOneDayDecorator oneDayDecorator = new CalendarOneDayDecorator(day);
+            return oneDayDecorator;
+        } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        return days;
-    }
-
-    private CalendarDayDecorator updateEventsOnCalendar() {
-        List<CalendarDay> days = getDecorateAllEventsOnCalendar();
-        decorator = new CalendarDayDecorator(days);
-        return decorator;
+        return null;
     }
 }

@@ -125,7 +125,10 @@ public class PlannerAddEventActivity extends AppCompatActivity {
                         event.setRemind(parseRemindOption(mRemindMeParam.getSelectedItem().toString()));
                         eventDAO.create(event);
                         addEventToAlarmManager(event, eventDAO.extractId(event));
-                        setResult(RESULT_OK, new Intent());
+
+                        Intent intent = new Intent();
+                        intent.putExtra("DATE", event.getDate());
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                 } catch (SQLException e) {

@@ -2,8 +2,6 @@ package neos.planner.decorator;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -11,34 +9,31 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 /**
- * Created by IEvgen Boldyr on 04.04.16.
+ * Created by IEvgen Boldyr on 05.04.16.
  * Project: Planner
+ *
+ * Класс который отвечает за отметку о событии по одному дню
  */
 
-public class CalendarDayDecorator implements DayViewDecorator {
+public class CalendarOneDayDecorator implements DayViewDecorator {
 
-    private HashSet<CalendarDay> days;
+    private CalendarDay day;
 
-    public CalendarDayDecorator(Collection<CalendarDay> days) {
-        this.days = new HashSet<>(days);
+    /*Конструктор для создания однодневного декоратора
+    * @param CalendarDay day - Параметр передающий дату для отметки*/
+    public CalendarOneDayDecorator(CalendarDay day) {
+        this.day = day;
     }
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        return days.contains(day);
+        return this.day != null && day.equals(this.day);
     }
 
     @Override
     public void decorate(DayViewFacade view) {
         view.addSpan(new StyleSpan(Typeface.BOLD));
         view.addSpan(new DotSpan(10, Color.parseColor("#2196F3")));
-    }
-
-    public void addNewDay(CalendarDay day) {
-        if ( !days.contains(day) ) days.add(day);
     }
 }
