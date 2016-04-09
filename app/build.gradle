@@ -27,8 +27,11 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'com.android.support:cardview-v7:23.2.1'
     compile 'com.android.support:recyclerview-v7:23.2.1'
+
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
-    compile 'com.prolificinteractive:material-calendarview:1.2.0'
+
     compile 'com.jakewharton:butterknife:7.0.1'
+
+    compile 'com.prolificinteractive:material-calendarview:1.2.0'
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -28,7 +29,6 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +58,7 @@ public class PlannerMainActivity extends AppCompatActivity
 
     //Блок переменных для сбора, хранения и обработки пользовательских данных
     @Bind(R.id.barMainToolbar) Toolbar toolbar;
+    @Bind(R.id.mCalendarCardView) CardView calendarCard;
     @Bind(R.id.mMaterialCalendar) MaterialCalendarView materialCalendar;
     @Bind(R.id.mRecyclerView) RecyclerView view;
     @Bind(R.id.fabMain) FloatingActionButton fab;
@@ -164,19 +165,22 @@ public class PlannerMainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_notes : {
-                toolbar.setTitle(R.string.nav_drawer_notes);
-                getNotesList();
-                break;
-            }
             case R.id.nav_all_events : {
                 toolbar.setTitle(R.string.nav_drawer_events_all);
+                visibleCalendarView();
                 getEventsList();
                 break;
             }
             case R.id.nav_today_events : {
-                getTodayEventsList();
                 toolbar.setTitle(R.string.nav_drawer_events_today);
+                visibleCalendarView();
+                getTodayEventsList();
+                break;
+            }
+            case R.id.nav_notes : {
+                toolbar.setTitle(R.string.nav_drawer_notes);
+                invisibleCalendarView();
+                getNotesList();
                 break;
             }
             case R.id.nav_search : {
@@ -380,7 +384,7 @@ public class PlannerMainActivity extends AppCompatActivity
         view.removeOnItemTouchListener(noteItemClickListener);
     }
 
-    /*Метод создающий декоатор для тетки в календаре нового события
+    /*Метод создающий декоатор для отметки в календаре нового события
     * @param String date - Параметр передающий строковое значение даты*/
     private CalendarOneDayDecorator updateEventsOnCalendar(String date) {
         try {
@@ -393,5 +397,17 @@ public class PlannerMainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         return null;
+    }
+
+    /*Метод скрывающий MaterialCalendarView*/
+    private void invisibleCalendarView() {
+        calendarCard.setVisibility(View.GONE);
+        materialCalendar.setVisibility(View.GONE);
+    }
+
+    /*Метод отображающий MaterialCalendarView*/
+    private void visibleCalendarView() {
+        calendarCard.setVisibility(View.VISIBLE);
+        materialCalendar.setVisibility(View.VISIBLE);
     }
 }
