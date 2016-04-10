@@ -27,6 +27,12 @@
             android:checked="false"
             android:icon="@mipmap/ic_search_button"
             android:title="@string/nav_drawer_search"/>
+        <item
+            android:id="@+id/nav_backup"
+            android:checked="false"
+            android:icon="@mipmap/ic_action_save"
+            android:title="@string/nav_drawer_backup"/>
+
     </group>
 
 </menu>

@@ -17,7 +17,7 @@ import neos.planner.service.UndoAlarmEventsService;
 
 public class DeviceRebootReceiver extends BroadcastReceiver {
 
-    /*Метод замускающий Service восстановления уведомлений в случае
+    /*Метод запускающий Service восстановления уведомлений в случае
     * если была выполнена перезагрузка устройства*/
     @Override
     public void onReceive(Context context, Intent intent) {

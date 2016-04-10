@@ -18,6 +18,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -38,6 +40,7 @@ import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.adapters.DbEventAdapter;
 import neos.planner.adapters.DbNoteAdapter;
+import neos.planner.adapters.SubTotalEventsAdapter;
 import neos.planner.async.MarkAllEventsOnCalendar;
 import neos.planner.decorator.CalendarDaysDecorator;
 import neos.planner.decorator.CalendarOneDayDecorator;
@@ -101,8 +104,9 @@ public class PlannerMainActivity extends AppCompatActivity
         createOnTouchListeners();
         getTodayEventsList();
 
-        materialCalendar.setSelectedDate(CalendarDay.today());
         materialCalendar.setCurrentDate(CalendarDay.today());
+        materialCalendar.setSelectedDate(CalendarDay.today());
+        materialCalendar.setTitleMonths(getBaseContext().getResources().getStringArray(R.array.arrMonths));
         materialCalendar.setFirstDayOfWeek(Calendar.MONDAY);
         materialCalendar.setCalendarDisplayMode(CalendarMode.WEEKS);
         materialCalendar.setOnDateChangedListener(this);
@@ -167,14 +171,18 @@ public class PlannerMainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.nav_all_events : {
                 toolbar.setTitle(R.string.nav_drawer_events_all);
+                getSubTotalStat();
+                materialCalendar.setCalendarDisplayMode(CalendarMode.MONTHS);
                 visibleCalendarView();
-                getEventsList();
+                YoYo.with(Techniques.SlideInDown).duration(500).playOn(calendarCard);
                 break;
             }
             case R.id.nav_today_events : {
                 toolbar.setTitle(R.string.nav_drawer_events_today);
                 visibleCalendarView();
                 getTodayEventsList();
+                materialCalendar.setCalendarDisplayMode(CalendarMode.WEEKS);
+                YoYo.with(Techniques.SlideInDown).duration(500).playOn(calendarCard);
                 break;
             }
             case R.id.nav_notes : {
@@ -227,11 +235,13 @@ public class PlannerMainActivity extends AppCompatActivity
     /*Метод обрабатывающий выбор определенного дня в календаре*/
     @Override
     public void onDateSelected(MaterialCalendarView widget, CalendarDay date, boolean selected) {
+        materialCalendar.setCalendarDisplayMode(CalendarMode.WEEKS);
         events = getTodayEventsFromDatabase(date.getDate());
         DbEventAdapter adapter = new DbEventAdapter(events);
         deleteAllRecyclerViewOnTouchListeners();
         view.addOnItemTouchListener(eventItemClickListener);
         view.setAdapter(adapter);
+        YoYo.with(Techniques.SlideInRight).duration(250).playOn(view);
     }
 
     /*Метод подготавливающий и вызывающий PlannerAddNoteActivity*/
@@ -354,6 +364,27 @@ public class PlannerMainActivity extends AppCompatActivity
         deleteAllRecyclerViewOnTouchListeners();
         view.addOnItemTouchListener(eventItemClickListener);
         view.setAdapter(adapter);
+    }
+
+    /*Метод подготавливающий данные для вывода статистики по событиям*/
+    private void getSubTotalStat() {
+        try {
+            events = eventsDAO.queryForAll();
+            Integer allEvents = events.size();
+            Integer activeEvents = 0;
+            for (DbEvent event : events) {
+                if (event.getStatus().equals(
+                        getBaseContext().getResources().getString(R.string.event_status_active))) {
+                    activeEvents++;
+                }
+            }
+            SubTotalEventsAdapter adapter = new SubTotalEventsAdapter(this, allEvents, activeEvents);
+            deleteAllRecyclerViewOnTouchListeners();
+            view.setAdapter(adapter);
+            YoYo.with(Techniques.SlideInUp).duration(500).playOn(view);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /*Метод создающий необходимые слушатели событий OnTouch для компонента RecyclerView */

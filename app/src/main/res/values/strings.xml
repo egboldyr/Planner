@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Planner</string>
+    <string name="app_name">Planner Lite</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -7,11 +7,10 @@
     <!-- Тесктовые элементы главного меню Navigation drawer -->
     <string name="nav_drawer_notes">Notes</string>
     <string name="nav_drawer_events">Events</string>
-    <string name="nav_drawer_events_all">All Events</string>
+    <string name="nav_drawer_events_all">Calendar</string>
     <string name="nav_drawer_events_today">Today</string>
-    <string name="nav_drawer_events_important">Important</string>
-    <string name="nav_drawer_contacts">Contacts</string>
     <string name="nav_drawer_search">Search</string>
+    <string name="nav_drawer_backup">BackUp</string>
 
     <!-- Текстовые элементы PlannerEditNoteActivity-->
     <string name="edit_note_header">Edit note</string>
@@ -82,5 +81,25 @@
     <string name="event_remind_1_hour">Remind me in 1h.</string>
     <string name="event_remind_3_hour">Remind me in 3h.</string>
     <string name="event_remind_6_hour">Remind me in 6h.</string>
+
+    <!-- Текстовые элементы карточки статистики -->
+    <string name="subtotal_all_events">All events: </string>
+    <string name="subtotal_only_active_events">Active events: </string>
+
+    <!--Текстовые элементы для отображения месяцев в MaterialCalendarView-->
+    <string-array name="arrMonths">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
 
 </resources>

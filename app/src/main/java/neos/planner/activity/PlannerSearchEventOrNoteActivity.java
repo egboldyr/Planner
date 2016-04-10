@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
@@ -211,6 +213,7 @@ public class PlannerSearchEventOrNoteActivity
         if (resultsNotes.size() != 0) {
             DbNoteAdapter adapter = new DbNoteAdapter(resultsNotes);
             mSearchResults.setAdapter(adapter);
+            YoYo.with(Techniques.FadeIn).duration(500).playOn(mSearchResults);
         }
     }
 
@@ -219,6 +222,7 @@ public class PlannerSearchEventOrNoteActivity
         if (resultsEvents.size() != 0) {
             DbEventAdapter adapter = new DbEventAdapter(resultsEvents);
             mSearchResults.setAdapter(adapter);
+            YoYo.with(Techniques.FadeIn).duration(500).playOn(mSearchResults);
         }
     }
 }

@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import neos.planner.R;
 import neos.planner.entity.DbEvent;
 import neos.planner.entity.DbNote;
+import neos.planner.entity.DbRecoveryFile;
 
 /**
  * Created by IEvgen Boldyr on 16.03.16.
@@ -26,11 +27,12 @@ public class ORMLiteOpenHelper extends OrmLiteSqliteOpenHelper {
 
     /*Название и актуальная версия БД*/
     private static final String DATABASE_NAME = "planner";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     /*Классы DAO для удобной работы с данными*/
     private Dao<DbNote, Long> notesDao;
     private Dao<DbEvent, Long> eventsDao;
+    private Dao<DbRecoveryFile, Long> recoveryDao;
 
     /*Конструктор для ORMLite-Framework*/
     public ORMLiteOpenHelper(Context context) {
@@ -45,6 +47,7 @@ public class ORMLiteOpenHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, DbNote.class);
             TableUtils.createTable(connectionSource, DbEvent.class);
+            TableUtils.createTable(connectionSource, DbRecoveryFile.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,6 +61,7 @@ public class ORMLiteOpenHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, DbNote.class);
             TableUtils.createTable(connectionSource, DbEvent.class);
+            TableUtils.createTable(connectionSource, DbRecoveryFile.class);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,5 +82,13 @@ public class ORMLiteOpenHelper extends OrmLiteSqliteOpenHelper {
             eventsDao = getDao(DbEvent.class);
         }
         return  eventsDao;
+    }
+
+    /*Метод возвращающий DAO для удобной работы с записями в таблице PLANNER_BACKUP*/
+    public Dao<DbRecoveryFile, Long> getRecoveryDao() throws SQLException {
+        if (recoveryDao == null) {
+            recoveryDao = getDao(DbRecoveryFile.class);
+        }
+        return recoveryDao;
     }
 }

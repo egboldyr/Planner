@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import neos.planner.entity.DbEvent;
 import neos.planner.entity.DbNote;
+import neos.planner.entity.DbRecoveryFile;
 
 /**
  * Created by IEvgen Boldyr on 16.03.16.
@@ -22,7 +23,8 @@ public class ORMLiteDataBaseConfigUtil extends OrmLiteConfigUtil{
      * при работе с БД, в случае изменений внесенных в ORMLiteOpenHelper,
      * добавить только те классы на которые были сделаны расшиоения
      */
-    private static final Class<?>[] classes = new Class[] {DbNote.class, DbEvent.class};
+    private static final Class<?>[] classes =
+            new Class[] {DbNote.class, DbEvent.class, DbRecoveryFile.class};
 
     /*Подпрограмма для генирации ormlite_config.txt*/
     public static void main(String[] args) throws IOException, SQLException {

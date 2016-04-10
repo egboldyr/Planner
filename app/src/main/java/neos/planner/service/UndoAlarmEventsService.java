@@ -47,6 +47,7 @@ public class UndoAlarmEventsService extends Service {
             events = eventsDAO.queryForAll();
             calendar = Calendar.getInstance();
             addEventsToAlarmManager();
+            stopService(new Intent(this, UndoAlarmEventsService.class));
         } catch (SQLException e) {
             e.printStackTrace();
         }
