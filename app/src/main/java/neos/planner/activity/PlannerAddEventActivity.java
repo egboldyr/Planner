@@ -69,6 +69,7 @@ public class PlannerAddEventActivity extends AppCompatActivity {
 
         toolbar.setTitle(R.string.add_event_header);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         calendar = Calendar.getInstance();

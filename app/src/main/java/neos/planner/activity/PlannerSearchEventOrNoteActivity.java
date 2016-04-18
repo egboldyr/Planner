@@ -70,6 +70,7 @@ public class PlannerSearchEventOrNoteActivity
 
         toolbar.setTitle(R.string.search_header);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         btnStartSearch.setOnClickListener(this);

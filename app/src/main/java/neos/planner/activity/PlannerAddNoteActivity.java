@@ -61,6 +61,7 @@ public class PlannerAddNoteActivity extends AppCompatActivity {
 
         toolbar.setTitle(R.string.add_note_header);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         String[] groups = {

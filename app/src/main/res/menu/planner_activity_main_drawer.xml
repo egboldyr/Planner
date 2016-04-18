@@ -3,20 +3,14 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:title="@string/nav_drawer_events">
-            <menu>
-                <item
-                    android:id="@+id/nav_all_events"
-                    android:checked="true"
-                    android:icon="@mipmap/ic_action_event"
-                    android:title="@string/nav_drawer_events_all"/>
-                <item
-                    android:id="@+id/nav_today_events"
-                    android:checked="false"
-                    android:title="@string/nav_drawer_events_today"/>
-            </menu>
-        </item>
-
+            android:id="@+id/nav_all_events"
+            android:checked="false"
+            android:icon="@mipmap/ic_action_event"
+            android:title="@string/nav_drawer_events_all"/>
+        <item
+            android:id="@+id/nav_today_events"
+            android:checked="true"
+            android:title="@string/nav_drawer_events_today"/>
         <item
             android:id="@+id/nav_notes"
             android:checked="false"

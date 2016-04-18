@@ -20,11 +20,14 @@ public class SubTotalEventsAdapter extends RecyclerView.Adapter<SubTotalEventsAd
     private Context context;
     private Integer allEvents;
     private Integer onlyActiveEvents;
+    private Integer onlyFinishEvents;
 
-    public SubTotalEventsAdapter(Context context, Integer allEvents, Integer onlyActiveEvents) {
+    public SubTotalEventsAdapter(Context context,
+                   Integer allEvents, Integer onlyActiveEvents, Integer onlyFinishEvents) {
         this.context = context;
         this.allEvents = allEvents;
         this.onlyActiveEvents = onlyActiveEvents;
+        this.onlyFinishEvents = onlyFinishEvents;
     }
 
     @Override
@@ -41,6 +44,8 @@ public class SubTotalEventsAdapter extends RecyclerView.Adapter<SubTotalEventsAd
                 context.getResources().getString(R.string.subtotal_all_events) + allEvents);
         holder.activeEvents.setText(
                 context.getResources().getString(R.string.subtotal_only_active_events) + onlyActiveEvents);
+        holder.finishEvents.setText(
+                context.getResources().getString(R.string.subtotal_finish_events) + onlyFinishEvents);
     }
 
     @Override
@@ -52,6 +57,7 @@ public class SubTotalEventsAdapter extends RecyclerView.Adapter<SubTotalEventsAd
 
         @Bind(R.id.mAllEvents) TextView allEvents;
         @Bind(R.id.mActiveEvents) TextView activeEvents;
+        @Bind(R.id.mFinishEvents) TextView finishEvents;
 
         public ViewHolder(View itemView) {
             super(itemView);

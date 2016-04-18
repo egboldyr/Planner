@@ -85,6 +85,7 @@
     <!-- Текстовые элементы карточки статистики -->
     <string name="subtotal_all_events">Всего событий: </string>
     <string name="subtotal_only_active_events">Активных событий: </string>
+    <string name="subtotal_finish_events">Выполненых событий: </string>
 
     <!--Текстовые элементы для отображения месяцев в MaterialCalendarView-->
     <string-array name="arrMonths">

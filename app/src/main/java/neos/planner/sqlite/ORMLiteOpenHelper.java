@@ -27,7 +27,7 @@ public class ORMLiteOpenHelper extends OrmLiteSqliteOpenHelper {
 
     /*Название и актуальная версия БД*/
     private static final String DATABASE_NAME = "planner";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     /*Классы DAO для удобной работы с данными*/
     private Dao<DbNote, Long> notesDao;

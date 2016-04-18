@@ -77,6 +77,7 @@ public class PlannerEditEventActivity extends AppCompatActivity {
 
         toolbar.setTitle(R.string.edit_event_header);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         try {

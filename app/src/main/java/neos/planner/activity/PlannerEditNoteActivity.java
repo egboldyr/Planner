@@ -64,6 +64,7 @@ public class PlannerEditNoteActivity extends AppCompatActivity {
 
         toolbar.setTitle(R.string.edit_note_header);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         try {
