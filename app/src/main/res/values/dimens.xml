@@ -36,7 +36,16 @@
     <dimen name="event_body_margin">8dp</dimen>
     <dimen name="event_body_text_size">16sp</dimen>
 
+    <!--Верстка карточки содержащей информацию о резервной копии-->
+    <dimen name="recovery_icon_margin">8dp</dimen>
+    <dimen name="recovery_header_margin">3dp</dimen>
+    <dimen name="recovery_header_text">18sp</dimen>
+    <dimen name="recovery_date_text">16sp</dimen>
+
     <!-- Верстка для корректного отображения подсказок -->
     <dimen name="event_hint_margin">3dp</dimen>
     <dimen name="event_hint_text_size">18sp</dimen>
+
+    <!--Размеры шрифтов на кнопках-->
+    <dimen name="buttons_text_size">18sp</dimen>
 </resources>

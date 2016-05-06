@@ -23,13 +23,17 @@ public class DbRecoveryFile {
     @DatabaseField(generatedId = true)
     private Long id;
 
-    /*Имя файла с резервной копией*/
-    @DatabaseField(columnName = "FILE_NAME")
-    private String fileName;
+    /*Информация о резервной копии*/
+    @DatabaseField(columnName = "RECOVERY_INFO")
+    private String recoveryInfo;
 
-    /*Путь к файлу с резервной копией*/
-    @DatabaseField(columnName = "FILE_PATH")
-    private String filePath;
+    /*Имя файла с резервной копией заметок*/
+    @DatabaseField(columnName = "NOTES_FILE_NAME")
+    private String notesFile;
+
+    /*Имя файла с резервной копией событий*/
+    @DatabaseField(columnName = "EVENTS_FILE_NAME")
+    private String eventsFile;
 
     /*Дата создания резервной копии*/
     @DatabaseField(columnName = "CREATION_DATE")
@@ -38,12 +42,14 @@ public class DbRecoveryFile {
     public DbRecoveryFile() {} /*Конструктор по умолчанию для ORMLite-Framework*/
 
     /*Конструктор для создания новой записи в тавлице БД
-    * @param fileName   - Параметр передающий имя файла с созданой копией
-    * @param filePath   - Параметр передающий путь к файлу
+    * @param recoveryInfo   - Параметр передающий описание резервной копии
+    * @param notesFile      - Параметр передающий имя файла с копией Заметок
+    * @param eventsFile     - Параметр передающий имя файла с копией Событий
     * @param date       - Параметр передающий дату создания резервной копии*/
-    public DbRecoveryFile(String fileName, String filePath, Date date) {
-        this.fileName = fileName;
-        this.filePath = filePath;
+    public DbRecoveryFile(String recoveryInfo, String notesFile, String eventsFile, Date date) {
+        this.recoveryInfo = recoveryInfo;
+        this.notesFile = notesFile;
+        this.eventsFile = eventsFile;
         this.date = date;
     }
 
@@ -51,11 +57,14 @@ public class DbRecoveryFile {
     public Long getId() {
         return id;
     }
-    public String getFileName() {
-        return fileName;
+    public String getRecoveryInfo() {
+        return recoveryInfo;
     }
-    public String getFilePath() {
-        return filePath;
+    public String getNotesFile() {
+        return notesFile;
+    }
+    public String getEventsFile() {
+        return eventsFile;
     }
     public Date getDate() {
         return date;

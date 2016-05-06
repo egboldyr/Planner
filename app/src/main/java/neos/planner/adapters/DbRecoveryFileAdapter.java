@@ -45,7 +45,7 @@ public class DbRecoveryFileAdapter extends RecyclerView.Adapter<DbRecoveryFileAd
         DbRecoveryFile file = files.get(position);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-        holder.file.setText(file.getFileName());
+        holder.file.setText(file.getRecoveryInfo());
         holder.date.setText(sdf.format(file.getDate()));
     }
 

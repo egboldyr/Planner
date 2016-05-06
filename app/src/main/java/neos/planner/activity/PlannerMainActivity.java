@@ -1,6 +1,7 @@
 package neos.planner.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -28,6 +30,10 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,15 +43,18 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import neos.planner.R;
 import neos.planner.adapters.DbEventAdapter;
 import neos.planner.adapters.DbNoteAdapter;
+import neos.planner.adapters.DbRecoveryFileAdapter;
 import neos.planner.adapters.SubTotalEventsAdapter;
 import neos.planner.async.MarkAllEventsOnCalendar;
 import neos.planner.decorator.CalendarDaysDecorator;
 import neos.planner.decorator.CalendarOneDayDecorator;
 import neos.planner.entity.DbEvent;
 import neos.planner.entity.DbNote;
+import neos.planner.entity.DbRecoveryFile;
 import neos.planner.listeners.DbEventItemClickListener;
 import neos.planner.listeners.DbNoteItemClickListener;
 import neos.planner.sqlite.ORMLiteOpenHelper;
@@ -67,15 +76,18 @@ public class PlannerMainActivity extends AppCompatActivity
     @Bind(R.id.fabMain) FloatingActionButton fab;
     @Bind(R.id.drawer_layout) DrawerLayout drawer;
     @Bind(R.id.nav_view) NavigationView navigationView;
+    @Bind(R.id.mCreateRecovery) Button btnCreateRecovery;
 
     //Блок переменных для работы с БД
     private ORMLiteOpenHelper helper;
     private Dao<DbNote, Long> notesDAO;
     private Dao<DbEvent, Long> eventsDAO;
+    private Dao<DbRecoveryFile, Long> recoveryDAO;
 
     //Блок переменных для хранения даных полученных с БД
     private List<DbNote> notes;
     private List<DbEvent> events;
+    private List<DbRecoveryFile> recoveries;
     private CalendarDaysDecorator decorator;
 
     /*Слушатели события OnTouchItem для двух разных списков*/
@@ -94,6 +106,7 @@ public class PlannerMainActivity extends AppCompatActivity
             helper = OpenHelperManager.getHelper(getApplicationContext(), ORMLiteOpenHelper.class);
             notesDAO = helper.getNotesDao();
             eventsDAO = helper.getEventsDao();
+            recoveryDAO = helper.getRecoveryDao();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -103,6 +116,7 @@ public class PlannerMainActivity extends AppCompatActivity
 
         createOnTouchListeners();
         getTodayEventsList();
+        invisibleRecoveryButton();
 
         materialCalendar.setCurrentDate(CalendarDay.today());
         materialCalendar.setSelectedDate(CalendarDay.today());
@@ -173,12 +187,14 @@ public class PlannerMainActivity extends AppCompatActivity
                 toolbar.setTitle(R.string.nav_drawer_events_all);
                 getSubTotalStat();
                 materialCalendar.setCalendarDisplayMode(CalendarMode.MONTHS);
+                invisibleRecoveryButton();
                 visibleCalendarView();
                 YoYo.with(Techniques.SlideInDown).duration(500).playOn(calendarCard);
                 break;
             }
             case R.id.nav_today_events : {
                 toolbar.setTitle(R.string.nav_drawer_events_today);
+                invisibleRecoveryButton();
                 visibleCalendarView();
                 getTodayEventsList();
                 materialCalendar.setCalendarDisplayMode(CalendarMode.WEEKS);
@@ -187,12 +203,21 @@ public class PlannerMainActivity extends AppCompatActivity
             }
             case R.id.nav_notes : {
                 toolbar.setTitle(R.string.nav_drawer_notes);
+                invisibleRecoveryButton();
                 invisibleCalendarView();
                 getNotesList();
                 break;
             }
             case R.id.nav_search : {
                 callSearchActivity();
+                break;
+            }
+            case R.id.nav_backup : {
+                toolbar.setTitle(R.string.nav_drawer_backup);
+                invisibleCalendarView();
+                visibleRecoveryButton();
+                getRecoveryFilesList();
+                YoYo.with(Techniques.SlideInDown).duration(500).playOn(btnCreateRecovery);
                 break;
             }
         }
@@ -333,6 +358,20 @@ public class PlannerMainActivity extends AppCompatActivity
         }
     }
 
+    /*Метод для получения всех сохраненых резервных копий данных
+    * в приложении из БД
+    * @return List<DbRecoveryFile> - Взозвращает список всех имеющихся
+    *                                резервных копий в приложении*/
+    private List<DbRecoveryFile> getRecoveryFilesFromDatabase() {
+        try {
+            List<DbRecoveryFile> list = recoveryDAO.queryForAll();
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /*Метод подготавливающий полный список со всеми пользовательскими
      *заметками для дальнейшего отображения на экране*/
     private void getNotesList() {
@@ -341,6 +380,7 @@ public class PlannerMainActivity extends AppCompatActivity
         deleteAllRecyclerViewOnTouchListeners();
         view.addOnItemTouchListener(noteItemClickListener);
         view.setAdapter(adapter);
+        YoYo.with(Techniques.FadeIn).duration(400).playOn(view);
     }
 
     /*Метод подготавливающий полный список со всеми пользовательскими
@@ -351,6 +391,17 @@ public class PlannerMainActivity extends AppCompatActivity
         deleteAllRecyclerViewOnTouchListeners();
         view.addOnItemTouchListener(eventItemClickListener);
         view.setAdapter(adapter);
+    }
+
+    /*Метод подготавливающий все резервные копии которые есть в
+    * приложении для дальнейшего отображения на экране */
+    private void getRecoveryFilesList() {
+        recoveries = getRecoveryFilesFromDatabase();
+        DbRecoveryFileAdapter adapter = new DbRecoveryFileAdapter(recoveries);
+        deleteAllRecyclerViewOnTouchListeners();
+        /*Добавить слушатель событий*/
+        view.setAdapter(adapter);
+        YoYo.with(Techniques.SlideInRight).duration(400).playOn(view);
     }
 
     /*Метод подготавливающий полный список событий запланированных
@@ -364,6 +415,7 @@ public class PlannerMainActivity extends AppCompatActivity
         deleteAllRecyclerViewOnTouchListeners();
         view.addOnItemTouchListener(eventItemClickListener);
         view.setAdapter(adapter);
+        YoYo.with(Techniques.SlideInRight).duration(250).playOn(view);
     }
 
     /*Метод подготавливающий данные для вывода статистики по событиям*/
@@ -372,13 +424,17 @@ public class PlannerMainActivity extends AppCompatActivity
             events = eventsDAO.queryForAll();
             Integer allEvents = events.size();
             Integer activeEvents = 0;
+            Integer finishEvents = 0;
             for (DbEvent event : events) {
                 if (event.getStatus().equals(
                         getBaseContext().getResources().getString(R.string.event_status_active))) {
                     activeEvents++;
+                } else {
+                    finishEvents++;
                 }
             }
-            SubTotalEventsAdapter adapter = new SubTotalEventsAdapter(this, allEvents, activeEvents);
+            SubTotalEventsAdapter adapter =
+                    new SubTotalEventsAdapter(this, allEvents, activeEvents, finishEvents);
             deleteAllRecyclerViewOnTouchListeners();
             view.setAdapter(adapter);
             YoYo.with(Techniques.SlideInUp).duration(500).playOn(view);
@@ -430,6 +486,65 @@ public class PlannerMainActivity extends AppCompatActivity
         return null;
     }
 
+    /*Метод для создания резервной копии пользовательских данных*/
+    @OnClick(R.id.mCreateRecovery)
+    public void createRecoveryOnClick() {
+        getNotesList();
+        getEventsList();
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy-HHmm");
+
+        DbRecoveryFile recovery = new DbRecoveryFile(
+                "Recovery copy",
+                "notes" + format.format(new Date()) + ".bkp",
+                "events" + format.format(new Date()) + ".bkp",
+                new Date()
+        );
+
+        try {
+            final FileOutputStream outNotes = openFileOutput(
+                    recovery.getNotesFile(), Context.MODE_PRIVATE);
+            final FileOutputStream outEvents = openFileOutput(
+                    recovery.getEventsFile(), Context.MODE_PRIVATE);
+
+            final Thread notesThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        ObjectOutputStream oos = new ObjectOutputStream(outNotes);
+                        oos.writeObject(notes);
+                        oos.flush();
+                        oos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            notesThread.start();
+
+            Thread eventsThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        ObjectOutputStream oos = new ObjectOutputStream(outEvents);
+                        oos.writeObject(events);
+                        oos.flush();
+                        oos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            eventsThread.start();
+
+            recoveryDAO.create(recovery);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        getRecoveryFilesList();
+    }
+
     /*Метод скрывающий MaterialCalendarView*/
     private void invisibleCalendarView() {
         calendarCard.setVisibility(View.GONE);
@@ -440,5 +555,15 @@ public class PlannerMainActivity extends AppCompatActivity
     private void visibleCalendarView() {
         calendarCard.setVisibility(View.VISIBLE);
         materialCalendar.setVisibility(View.VISIBLE);
+    }
+
+    /*Метод скрывающий отображение Button (Для создания резервной копии)*/
+    private void invisibleRecoveryButton() {
+        btnCreateRecovery.setVisibility(View.GONE);
+    }
+
+    /*Метод скрывающий отображение Button (Для создания резервной копии)*/
+    private void visibleRecoveryButton() {
+        btnCreateRecovery.setVisibility(View.VISIBLE);
     }
 }

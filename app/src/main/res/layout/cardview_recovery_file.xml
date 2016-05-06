@@ -10,39 +10,75 @@
         android:layout_margin="@dimen/cardview_margin">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/events_finish"
-                android:layout_margin="@dimen/cardview_margin"/>
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/recovery_icon"
+                    android:layout_margin="@dimen/recovery_icon_margin"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/recovery_header_margin">
+
+                    <TextView
+                        android:id="@+id/mFileName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textSize="@dimen/recovery_header_text"
+                        android:textColor="@color/colorPrimaryText"/>
+
+                    <TextView
+                        android:id="@+id/mCopyCreationDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="right|center_vertical"
+                        android:textSize="@dimen/recovery_date_text"
+                        android:textColor="@color/colorSecondaryText"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/mFileName"
+                <ImageButton
+                    android:id="@+id/btnRecoveryUndo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center|center_vertical"/>
+                    android:background="?android:attr/selectableItemBackground"
+                    android:src="@mipmap/ic_action_undo"/>
 
-                <TextView
-                    android:id="@+id/mCopyCreationDate"
+                <ImageButton
+                    android:id="@+id/btnRecoveryDelete"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="right|center_vertical"/>
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:src="@mipmap/ic_action_discard"/>
 
             </LinearLayout>
 
         </LinearLayout>
-
     </android.support.v7.widget.CardView>
 
 </LinearLayout>

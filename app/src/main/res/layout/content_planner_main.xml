@@ -17,6 +17,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/mCreateRecovery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/cardview_margin"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorToolbarText"
+            android:text="@string/create_recovery_file"
+            android:textSize="@dimen/buttons_text_size"/>
+
         <android.support.v7.widget.CardView
             android:id="@+id/mCalendarCardView"
             android:layout_width="match_parent"

@@ -100,12 +100,7 @@ public class PlannerEditEventActivity extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 monthOfYear++;
-                                if (monthOfYear < 10) {
-                                    mEventDate.setText(dayOfMonth + ".0" + monthOfYear + "." + year);
-                                } else {
-                                    mEventDate.setText(dayOfMonth + "." + monthOfYear + "." + year);
-                                }
-                                ;
+                                mEventDate.setText(parseDateFromDatePicker(dayOfMonth, monthOfYear, year));
                             }
                         }, year, month, day);
                 dialog.show();
@@ -119,11 +114,7 @@ public class PlannerEditEventActivity extends AppCompatActivity {
                 TimePickerDialog dialog = new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if (minute < 10) {
-                            mEventTime.setText(hourOfDay + ":0" + minute);
-                        } else {
-                            mEventTime.setText(hourOfDay + ":" + minute);
-                        }
+                        mEventTime.setText(parseTimeFromTimePicker(hourOfDay, minute));
                     }
                 }, hours, minutes, true);
                 dialog.show();
@@ -259,6 +250,41 @@ public class PlannerEditEventActivity extends AppCompatActivity {
         }
     }
 
+    /*Метод возвращающий строковое значение даты на основании параметров DatePicker
+    * @param Integer dayOfMonth  - Параметр передающий число
+    * @param Integer monthOfYear - Параметр передающий месяц
+    * @param Integer year        - Параметр передающий год
+    * @return String             - Возвращается строковое представление даты*/
+    private String parseDateFromDatePicker(Integer dayOfMonth, Integer monthOfYear, Integer year) {
+        if (monthOfYear < 10) {
+            if (dayOfMonth < 10) {
+                return "0" + dayOfMonth + ".0" + monthOfYear + "." + year;
+            } else {
+                return dayOfMonth + ".0" + monthOfYear + "." + year;
+            }
+        } else {
+            return dayOfMonth + "." + monthOfYear + "." + year;
+        }
+    }
+
+    /*Метод возвращающий строковое значение времени на основании параметров TimePicker
+    * @param Integer hourOfDay - Параметр передающий количество часов
+    * @param Integer minute    - Параметр передающий количество минут
+    * @return String           - Возвращает строковое представление времени*/
+    private String parseTimeFromTimePicker(Integer hourOfDay, Integer minute) {
+        if (hourOfDay < 10) {
+            if (minute < 10) {
+                return "0" + hourOfDay + ":0" + minute;
+            } else {
+                return "0" + hourOfDay + ":" + minute;
+            }
+        } else {
+            if (minute < 10) {
+                return hourOfDay + ":0" + minute;
+            }
+            return hourOfDay + ":" + minute;
+        }
+    }
 
     /*Временное решение для удобства сохранения времени до события в нужном формате*/
     private String parseRemindOption(String remind) {

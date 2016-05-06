@@ -12,6 +12,9 @@
     <string name="nav_drawer_search">Search</string>
     <string name="nav_drawer_backup">BackUp</string>
 
+    <!-- Текстовые элементы PlannerMainActivity-->
+    <string name="create_recovery_file">Create backup copy</string>
+
     <!-- Текстовые элементы PlannerEditNoteActivity-->
     <string name="edit_note_header">Edit note</string>
     <string name="edit_note_hint_title">Title</string>
