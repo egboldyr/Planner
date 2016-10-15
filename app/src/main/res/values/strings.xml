@@ -14,6 +14,7 @@
 
     <!-- Текстовые элементы PlannerMainActivity-->
     <string name="create_recovery_file">Create backup copy</string>
+    <string name="create_recovery_file_annotation">BackUp copy on: </string>
 
     <!-- Текстовые элементы PlannerEditNoteActivity-->
     <string name="edit_note_header">Edit note</string>

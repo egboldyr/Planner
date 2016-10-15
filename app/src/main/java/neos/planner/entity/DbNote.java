@@ -3,6 +3,7 @@ package neos.planner.entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Date;
  */
 
 @DatabaseTable(tableName = "PLANNER_NOTES")
-public class DbNote {
+public class DbNote implements Serializable {
 
     /*Автогенерируемый уникальный идентефикатор заметки*/
     @DatabaseField(generatedId = true)

@@ -55,7 +55,7 @@ public class DbRecoveryFileAdapter extends RecyclerView.Adapter<DbRecoveryFileAd
 
         holder.file.setText(file.getRecoveryInfo());
         holder.date.setText(sdf.format(file.getDate()));
-        holder.btnUndo.setOnClickListener(new RecoveryUndoClickListener());
+        holder.btnUndo.setOnClickListener(new RecoveryUndoClickListener(files, position));
         //holder.btnDelete.setOnClickListener(new RecoveryDeleteClickListener(files, this, position));
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override

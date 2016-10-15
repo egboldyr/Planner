@@ -14,6 +14,7 @@
 
     <!-- Текстовые элементы PlannerMainActivity-->
     <string name="create_recovery_file">Создать резервную копию</string>
+    <string name="create_recovery_file_annotation">Резервная копия за: </string>
 
     <!-- Текстовые элементы PlannerEditNoteActivity-->
     <string name="edit_note_header">Редактирование</string>

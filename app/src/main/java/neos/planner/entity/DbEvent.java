@@ -3,6 +3,8 @@ package neos.planner.entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 /**
  * Created by IEvgen Boldyr on 16.03.16.
  * Project: Planner
@@ -15,7 +17,7 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 
 @DatabaseTable(tableName = "PLANNER_EVENTS")
-public class DbEvent {
+public class DbEvent implements Serializable{
 
     /*Автогенерируемый уникальный идентефикатор события*/
     @DatabaseField(generatedId = true)

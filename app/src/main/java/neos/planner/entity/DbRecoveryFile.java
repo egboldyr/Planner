@@ -3,6 +3,7 @@ package neos.planner.entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Date;
  */
 
 @DatabaseTable(tableName = "PLANNER_BACK_UP")
-public class DbRecoveryFile {
+public class DbRecoveryFile implements Serializable {
 
     /*Автогенерируемый уникальный идентефикатор файла*/
     @DatabaseField(generatedId = true)
