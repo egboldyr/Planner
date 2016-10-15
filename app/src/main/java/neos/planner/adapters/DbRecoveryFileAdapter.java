@@ -4,8 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -13,6 +18,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.entity.DbRecoveryFile;
+import neos.planner.listeners.RecoveryDeleteClickListener;
+import neos.planner.listeners.RecoveryUndoClickListener;
+import neos.planner.sqlite.ORMLiteOpenHelper;
 
 /**
  * Created by IEvgen Boldyr on 18.04.16.
@@ -41,12 +49,33 @@ public class DbRecoveryFileAdapter extends RecyclerView.Adapter<DbRecoveryFileAd
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         DbRecoveryFile file = files.get(position);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
         holder.file.setText(file.getRecoveryInfo());
         holder.date.setText(sdf.format(file.getDate()));
+        holder.btnUndo.setOnClickListener(new RecoveryUndoClickListener());
+        //holder.btnDelete.setOnClickListener(new RecoveryDeleteClickListener(files, this, position));
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    ORMLiteOpenHelper helper =
+                            OpenHelperManager.getHelper(v.getContext(), ORMLiteOpenHelper.class);
+                    Dao<DbRecoveryFile, Long> dao = helper.getRecoveryDao();
+
+                    DbRecoveryFile file = files.get(position);
+                    files.remove(position);
+                    dao.deleteById(file.getId());
+
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, files.size());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -58,6 +87,8 @@ public class DbRecoveryFileAdapter extends RecyclerView.Adapter<DbRecoveryFileAd
 
         @Bind(R.id.mFileName) TextView file;
         @Bind(R.id.mCopyCreationDate) TextView date;
+        @Bind(R.id.btnRecoveryUndo) ImageButton btnUndo;
+        @Bind(R.id.btnRecoveryDelete) ImageButton btnDelete;
 
         public ViewHolder(View itemView) {
             super(itemView);

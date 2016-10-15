@@ -16,6 +16,7 @@ import android.view.View;
 public class DbEventItemClickListener implements RecyclerView.OnItemTouchListener {
     private OnItemClickListener listener;
     private GestureDetector detector;
+
     public interface OnItemClickListener {
         public void onItemClick(View view, int position);
     }

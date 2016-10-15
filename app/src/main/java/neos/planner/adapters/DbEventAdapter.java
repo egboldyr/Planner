@@ -21,7 +21,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import neos.planner.R;
 import neos.planner.entity.DbEvent;
-import neos.planner.listeners.EventDeleteButtonClickListener;
 import neos.planner.listeners.EventShareButtonClickListener;
 import neos.planner.receiver.EventRemindReceiver;
 import neos.planner.sqlite.ORMLiteOpenHelper;

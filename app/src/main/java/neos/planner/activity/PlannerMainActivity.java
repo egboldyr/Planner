@@ -399,13 +399,12 @@ public class PlannerMainActivity extends AppCompatActivity
         recoveries = getRecoveryFilesFromDatabase();
         DbRecoveryFileAdapter adapter = new DbRecoveryFileAdapter(recoveries);
         deleteAllRecyclerViewOnTouchListeners();
-        /*Добавить слушатель событий*/
         view.setAdapter(adapter);
         YoYo.with(Techniques.SlideInRight).duration(400).playOn(view);
     }
 
     /*Метод подготавливающий полный список событий запланированных
-    * на текущий день для дальнейшеко отображения на экране*/
+    * на текущий день для дальнейшего отображения на экране*/
     private void getTodayEventsList() {
         Calendar calendar = Calendar.getInstance();
         Date currDate = calendar.getTime();
@@ -494,7 +493,7 @@ public class PlannerMainActivity extends AppCompatActivity
         SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy-HHmm");
 
         DbRecoveryFile recovery = new DbRecoveryFile(
-                "Recovery copy",
+                getBaseContext().getString(R.string.create_recovery_file_annotation),
                 "notes" + format.format(new Date()) + ".bkp",
                 "events" + format.format(new Date()) + ".bkp",
                 new Date()
