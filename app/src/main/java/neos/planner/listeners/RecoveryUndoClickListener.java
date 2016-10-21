@@ -53,7 +53,7 @@ public class RecoveryUndoClickListener implements View.OnClickListener {
                 notesDao.createOrUpdate(note);
             }
 
-            FileInputStream fisEvents = v.getContext().openFileInput(recovery.getNotesFile());
+            FileInputStream fisEvents = v.getContext().openFileInput(recovery.getEventsFile());
             ObjectInputStream oisEvents = new ObjectInputStream(fisEvents);
             List<DbEvent> events = (List<DbEvent>) oisEvents.readObject();
 

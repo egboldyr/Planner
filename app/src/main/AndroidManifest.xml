@@ -2,16 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="neos.planner">
 
+    <!-- Все разрешения запрошенные у пользователя устройства -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <!-- Все разрешения запрошенные у пользователя устройства -->
-        <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-        <uses-permission android:name="android.permission.VIBRATE"/>
 
         <!-- Все Активити которые используются в приложении-->
         <activity

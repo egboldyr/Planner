@@ -30,7 +30,6 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -213,15 +212,14 @@ public class PlannerMainActivity extends AppCompatActivity
                 callSearchActivity();
                 break;
             }
-            /*Закоментировано в связи с тстовым релизом версии 0.1.0*/
-            /*case R.id.nav_backup : {
+            case R.id.nav_backup : {
                 toolbar.setTitle(R.string.nav_drawer_backup);
                 invisibleCalendarView();
                 visibleRecoveryButton();
                 getRecoveryFilesList();
                 YoYo.with(Techniques.SlideInDown).duration(500).playOn(btnCreateRecovery);
                 break;
-            }*/
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -502,8 +500,8 @@ public class PlannerMainActivity extends AppCompatActivity
         );
 
         try {
-            final FileOutputStream outNotes = new FileOutputStream(new File(recovery.getNotesFile()));
-            final FileOutputStream outEvents = new FileOutputStream(new File(recovery.getEventsFile()));
+            final FileOutputStream outNotes = openFileOutput(recovery.getNotesFile(), MODE_PRIVATE);
+            final FileOutputStream outEvents = openFileOutput(recovery.getEventsFile(), MODE_PRIVATE);
 
             final Thread notesThread = new Thread(new Runnable() {
                 @Override
