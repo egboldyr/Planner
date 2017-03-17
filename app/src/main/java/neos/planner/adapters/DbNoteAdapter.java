@@ -12,6 +12,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import neos.planner.R;
+import neos.planner.annotation.About;
 import neos.planner.entity.DbNote;
 import neos.planner.listeners.NoteShareButtonClickListener;
 
@@ -22,6 +23,7 @@ import neos.planner.listeners.NoteShareButtonClickListener;
  * Адаптер для отображения пользовательских заметок выбранных из БД
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class DbNoteAdapter extends RecyclerView.Adapter<DbNoteAdapter.ViewHolder> {
 
     /*Список всех заметок*/

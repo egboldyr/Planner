@@ -17,6 +17,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import neos.planner.R;
+import neos.planner.annotation.About;
 import neos.planner.entity.DbRecoveryFile;
 import neos.planner.listeners.RecoveryDeleteClickListener;
 import neos.planner.listeners.RecoveryUndoClickListener;
@@ -29,6 +30,7 @@ import neos.planner.sqlite.ORMLiteOpenHelper;
  * Адаптер для отображения всех резервных копий созданных в приложении
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class DbRecoveryFileAdapter extends RecyclerView.Adapter<DbRecoveryFileAdapter.ViewHolder>{
 
     /*Список всех файлов*/

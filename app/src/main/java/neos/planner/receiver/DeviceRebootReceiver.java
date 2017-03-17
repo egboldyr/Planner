@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import neos.planner.annotation.About;
 import neos.planner.service.UndoAlarmEventsService;
 
 /**
@@ -15,6 +16,7 @@ import neos.planner.service.UndoAlarmEventsService;
  * так как при перезагрузке устройства отчищается AlarmManager
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class DeviceRebootReceiver extends BroadcastReceiver {
 
     /*Метод запускающий Service восстановления уведомлений в случае

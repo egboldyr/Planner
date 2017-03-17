@@ -10,11 +10,14 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import neos.planner.R;
+import neos.planner.annotation.About;
 
 /**
  * Created by IEvgen Boldyr on 10.04.16.
  * Project: Planner
  */
+
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class SubTotalEventsAdapter extends RecyclerView.Adapter<SubTotalEventsAdapter.ViewHolder> {
 
     private Context context;

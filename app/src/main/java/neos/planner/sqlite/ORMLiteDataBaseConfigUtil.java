@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import neos.planner.annotation.About;
 import neos.planner.entity.DbEvent;
 import neos.planner.entity.DbNote;
 import neos.planner.entity.DbRecoveryFile;
@@ -17,6 +18,7 @@ import neos.planner.entity.DbRecoveryFile;
  * Утилита для автоматической генерации кофигурационного файла ormlite_config.txt
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class ORMLiteDataBaseConfigUtil extends OrmLiteConfigUtil{
     /**
      * Здесь необходимо описать все сущности которые будут использоватся

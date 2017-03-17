@@ -15,6 +15,7 @@ import java.io.StreamCorruptedException;
 import java.sql.SQLException;
 import java.util.List;
 
+import neos.planner.annotation.About;
 import neos.planner.entity.DbEvent;
 import neos.planner.entity.DbNote;
 import neos.planner.entity.DbRecoveryFile;
@@ -26,6 +27,7 @@ import neos.planner.sqlite.ORMLiteOpenHelper;
  * Слушатель события для кнопки RecoveryUndoButton
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class RecoveryUndoClickListener implements View.OnClickListener {
 
     private List<DbRecoveryFile> files;

@@ -20,6 +20,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import neos.planner.R;
+import neos.planner.annotation.About;
 import neos.planner.entity.DbEvent;
 import neos.planner.listeners.EventShareButtonClickListener;
 import neos.planner.receiver.EventRemindReceiver;
@@ -32,6 +33,7 @@ import neos.planner.sqlite.ORMLiteOpenHelper;
  * Адаптер для отображения запланированных событий пользователя выбраных из БД
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class DbEventAdapter extends RecyclerView.Adapter<DbEventAdapter.ViewHolder> {
 
     /*Список всех событий*/

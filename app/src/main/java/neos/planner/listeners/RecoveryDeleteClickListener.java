@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import neos.planner.adapters.DbRecoveryFileAdapter;
+import neos.planner.annotation.About;
 import neos.planner.entity.DbRecoveryFile;
 import neos.planner.sqlite.ORMLiteOpenHelper;
 
@@ -19,6 +20,7 @@ import neos.planner.sqlite.ORMLiteOpenHelper;
  * Слушатель события для RecoveryDeleteButton
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class RecoveryDeleteClickListener implements View.OnClickListener {
 
     /*Переменные необходимые для работы слушателя*/

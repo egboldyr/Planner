@@ -6,6 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 import java.util.Date;
 
+import neos.planner.annotation.About;
+
 /**
  * Created by IEvgen Boldyr on 16.03.16.
  * Project: Planner
@@ -18,6 +20,7 @@ import java.util.Date;
  * с помощью утилиты ORMLiteDataBaseConfigUtil
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 @DatabaseTable(tableName = "PLANNER_NOTES")
 public class DbNote implements Serializable {
 

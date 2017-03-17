@@ -33,6 +33,7 @@ import java.util.Scanner;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import neos.planner.R;
+import neos.planner.annotation.About;
 import neos.planner.entity.DbEvent;
 import neos.planner.receiver.EventRemindReceiver;
 import neos.planner.sqlite.ORMLiteOpenHelper;
@@ -44,6 +45,7 @@ import neos.planner.sqlite.ORMLiteOpenHelper;
  * Активити для создания нового события
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class PlannerAddEventActivity extends AppCompatActivity {
 
     /*Переменные храняшие данные текущей даты*/

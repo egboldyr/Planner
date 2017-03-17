@@ -14,6 +14,8 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 import java.util.Collection;
 import java.util.HashSet;
 
+import neos.planner.annotation.About;
+
 /**
  * Created by IEvgen Boldyr on 04.04.16.
  * Project: Planner
@@ -21,6 +23,7 @@ import java.util.HashSet;
  * Класс который отвечает за отметки событий в календаре по нескольким дням
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class CalendarDaysDecorator implements DayViewDecorator {
 
     /*Коллекция хранящая даты всех событий*/

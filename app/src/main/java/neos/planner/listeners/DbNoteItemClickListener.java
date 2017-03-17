@@ -6,6 +6,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import neos.planner.annotation.About;
+
 /**
  * Created by IEvgen Boldyr on 17.03.16.
  * Project: Planner
@@ -13,6 +15,7 @@ import android.view.View;
  * Cлушатель события нажатие на один из элементов списка заметок
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class DbNoteItemClickListener implements RecyclerView.OnItemTouchListener {
     private OnItemClickListener listener;
     private GestureDetector detector;

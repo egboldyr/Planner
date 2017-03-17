@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 
 import neos.planner.R;
+import neos.planner.annotation.About;
 
 /**
  * Created by IEvgen Boldyr on 28.03.16.
@@ -17,6 +18,7 @@ import neos.planner.R;
  * Приемщик для всех уведомлений созданных и отправленных AlarmManager'ом
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class EventRemindReceiver extends BroadcastReceiver{
 
     @Override

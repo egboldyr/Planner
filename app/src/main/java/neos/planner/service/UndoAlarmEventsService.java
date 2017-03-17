@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import neos.planner.annotation.About;
 import neos.planner.entity.DbEvent;
 import neos.planner.receiver.EventRemindReceiver;
 import neos.planner.sqlite.ORMLiteOpenHelper;
@@ -30,6 +31,7 @@ import neos.planner.sqlite.ORMLiteOpenHelper;
  * в случае если устройство было перезагружено
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class UndoAlarmEventsService extends Service {
 
     private ORMLiteOpenHelper helper;

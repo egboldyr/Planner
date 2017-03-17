@@ -49,6 +49,7 @@ import neos.planner.adapters.DbEventAdapter;
 import neos.planner.adapters.DbNoteAdapter;
 import neos.planner.adapters.DbRecoveryFileAdapter;
 import neos.planner.adapters.SubTotalEventsAdapter;
+import neos.planner.annotation.About;
 import neos.planner.async.MarkAllEventsOnCalendar;
 import neos.planner.decorator.CalendarDaysDecorator;
 import neos.planner.decorator.CalendarOneDayDecorator;
@@ -59,6 +60,7 @@ import neos.planner.listeners.DbEventItemClickListener;
 import neos.planner.listeners.DbNoteItemClickListener;
 import neos.planner.sqlite.ORMLiteOpenHelper;
 
+@About(author = "IEvgen_Boldyr", version = "0.1.1")
 public class PlannerMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnDateSelectedListener {
 

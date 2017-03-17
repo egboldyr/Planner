@@ -22,6 +22,7 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import neos.planner.R;
+import neos.planner.annotation.About;
 import neos.planner.entity.DbNote;
 import neos.planner.sqlite.ORMLiteOpenHelper;
 
@@ -32,6 +33,7 @@ import neos.planner.sqlite.ORMLiteOpenHelper;
  * Активити для создания новой заметки в приложении
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class PlannerAddNoteActivity extends AppCompatActivity {
 
     //Блок переменных для работы с БД

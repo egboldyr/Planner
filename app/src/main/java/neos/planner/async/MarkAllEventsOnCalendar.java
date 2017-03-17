@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import neos.planner.annotation.About;
 import neos.planner.decorator.CalendarDaysDecorator;
 import neos.planner.entity.DbEvent;
 import neos.planner.sqlite.ORMLiteOpenHelper;
@@ -25,6 +26,7 @@ import neos.planner.sqlite.ORMLiteOpenHelper;
  * Класс для отметки всех событий в календаре в отдельном потоке
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class MarkAllEventsOnCalendar extends AsyncTask<Void, Void, Void> {
 
     /*Переменные и компонеты необходимые для работы*/

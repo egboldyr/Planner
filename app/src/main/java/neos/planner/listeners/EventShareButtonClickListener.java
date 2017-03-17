@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
+import neos.planner.annotation.About;
 import neos.planner.entity.DbEvent;
 
 /**
@@ -19,6 +20,7 @@ import neos.planner.entity.DbEvent;
  * Слушатель событий для ShareEventButton
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class EventShareButtonClickListener implements View.OnClickListener {
 
     private DbEvent event;

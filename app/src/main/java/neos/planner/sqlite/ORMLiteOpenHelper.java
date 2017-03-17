@@ -11,6 +11,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 import neos.planner.R;
+import neos.planner.annotation.About;
 import neos.planner.entity.DbEvent;
 import neos.planner.entity.DbNote;
 import neos.planner.entity.DbRecoveryFile;
@@ -23,7 +24,9 @@ import neos.planner.entity.DbRecoveryFile;
  * ormlite_config.txt с помощью утилиты ORMLiteDataBaseConfigUtil
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class ORMLiteOpenHelper extends OrmLiteSqliteOpenHelper {
+
 
     /*Название и актуальная версия БД*/
     private static final String DATABASE_NAME = "planner";

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import neos.planner.adapters.DbEventAdapter;
+import neos.planner.annotation.About;
 import neos.planner.entity.DbEvent;
 import neos.planner.sqlite.ORMLiteOpenHelper;
 
@@ -19,6 +20,7 @@ import neos.planner.sqlite.ORMLiteOpenHelper;
  * Слушатель событий для EventRemoveButton
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class EventDeleteButtonClickListener implements View.OnClickListener {
 
     private List<DbEvent> events;

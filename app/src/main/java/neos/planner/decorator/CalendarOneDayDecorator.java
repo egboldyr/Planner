@@ -9,6 +9,8 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
+import neos.planner.annotation.About;
+
 /**
  * Created by IEvgen Boldyr on 05.04.16.
  * Project: Planner
@@ -16,6 +18,7 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan;
  * Класс который отвечает за отметку о событии по одному дню
  */
 
+@About(author = "IEvgen_Boldyr", version = "0.1.0")
 public class CalendarOneDayDecorator implements DayViewDecorator {
 
     private CalendarDay day;
